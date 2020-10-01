@@ -1,0 +1,931 @@
+{
+	"FFPAAPaladinCuirass": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+	"FFPAAPaladinCuirassNOENCH": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassBlack": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassWhite": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassBlackNOENCH": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassWhiteNOENCH": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassL": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassNOENCHL": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassBlackL": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassWhiteL": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassBlackNOENCHL": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassWhiteNOENCHL": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+    "FFPAAPaladinCuirassNPC": {
+		"keywords": ["nonconductive", "brittle", "deep"],
+		"material": "Glass",
+		"construction": "Deep"
+	},
+	"DBArmorWorn": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+    "DBArmorWornPlayable": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+    "DBArmorSP": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+    "DBArmorShortSleeve": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+    "DBArmor": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+	"ArmorThievesGuildLeaderCuirass": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+        "ArmorThievesGuildLeaderCuirassMercer": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+        "ArmorLinweCuirass": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+        "ArmorSummersetShadowsGuildCuirass": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+        "ArmorThievesGuildKarliahCuirass": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+        "ArmorTsunCuirass": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+        "ArmorThievesGuildCuirass": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+        "DLC2TGArmorVariantCuirass": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+        "ArmorThievesGuildVariantCuirass": {
+		"keywords": ["leathery"],
+		"material": "Leather"
+	},
+	"ArmorNightingale": {
+        "keywords": ["leathery", "layered"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "ArmorGuardCuirassSolitude": {
+    	"keywords": ["leathery"],
+    	"material": "Leather"
+    },
+    "ArmorGuardCuirassFalkreath": {
+    	"keywords": ["leathery"],
+    	"material": "Leather"
+    },
+    "ArmorGuardCuirassHjaalmarch": {
+    	"keywords": ["leathery"],
+    	"material": "Leather"
+    },
+    "ArmorGuardCuirassMarkarth": {
+    	"keywords": ["leathery"],
+    	"material": "Leather"
+    },
+    "ArmorGuardCuirassRiften": {
+    	"keywords": ["leathery"],
+    	"material": "Leather"
+    },
+    "ArmorGuardCuirassThePale": {
+    	"keywords": ["leathery"],
+    	"material": "Leather"
+    },
+    "ArmorGuardCuirassWhiterun": {
+    	"keywords": ["leathery"],
+    	"material": "Leather"
+    },
+    "ArmorGuardCuirassWinterhold": {
+    	"keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "DLC2WordBurnedInChestAfter": {
+    	"keywords": ["warm", "thick"],
+    	"material": "Fur",
+    	"construction": "Thick"
+    },
+    "DLC2WordBurnedInChest": {
+    	"keywords": ["warm", "thick"],
+    	"material": "Fur",
+		"construction": "Thick"
+	},
+    "DLC2HMKillsMiraak": {
+    	"keywords": ["warm", "thick"],
+        "material": "Fur",
+        "construction": "Thick"
+    },
+    "ArmorBanditCuirass": {
+    	"keywords": ["warm"],
+    	"material": "Fur"
+    },
+    "ArmorBanditCuirass1": {
+    	"keywords": ["warm"],
+    	"material": "Fur"
+    },
+    "ArmorBanditCuirass2": {
+    	"keywords": ["warm"],
+    	"material": "Fur"
+    },
+    "ArmorBanditCuirass3": {
+    	"keywords": ["warm"],
+    	"material": "Fur"
+    },
+    "IAFalkreathCuirass": {
+    	"keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    "IARedguardKnightHeavyCuirass": {
+    	"keywords": ["metal"],
+        "material": "Metal"
+    },
+    "IARedguardKnightLightCuirass": {
+        "keywords": ["metal"],
+        "material": "Metal"
+    },
+    "IAVagabondCrimsonCuirass": {
+    	"keywords": ["warm", "leathery"],
+        "material": "Fur/Leather"
+    },
+    "IAVagabondLeatherCuirass": {
+    	"keywords": ["warm", "leathery"],
+        "material": "Fur/Leather"
+    },
+    "IAVagabondDuskCuirass": {
+    	"keywords": ["warm", "leathery"],
+        "material": "Fur/Leather"
+    },
+    "IAVanguardPlateCuirass": {
+    	"keywords": ["metal", "thick"],
+        "material": "Metal",
+        "construction": "Thick"
+    },
+    "IAWarchiefHeavyBulwark": {
+    	"keywords": ["warm", "metal", "layered"],
+        "material": "Metal/Fur",
+        "construction": "Layered"
+    },
+    "IAWarchiefLightBulwark": {
+    	"keywords": ["warm", "metal", "layered"],
+        "material": "Metal/Fur",
+        "construction": "Layered"
+    },
+    "IAHedgeKnightCuirass": {
+    	"keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    "IAEinherjarPlateLightCuirass": {
+    	"keywords": ["warm", "metal", "deep"],
+        "material": "Metal/Fur",
+        "construction": "Deep"
+    },
+    "IAEinherjarPlateDarkCuirass": {
+    	"keywords": ["warm", "metal", "deep"],
+        "material": "Metal/Fur",
+        "construction": "Deep"
+    },
+    "IAHunterCuirass": {
+    	"keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "IAEinherjarBrigandineDarkCuirass": {
+    	"keywords": ["warm", "leathery", "layered"],
+        "material": "Leather/Fur",
+        "construction": "Layered"
+    },
+    "IAEinherjarBrigandineLightCuirass": {
+    	"keywords": ["warm", "leathery", "layered"],
+        "material": "Leather/Fur",
+        "construction": "Layered"
+    },
+    "IANordMailLightShirt": {
+    	"keywords": ["metal"],
+        "material": "Metal"
+    },
+    "IANordMailHeavyHauberk": {
+    	"keywords": ["metal"],
+        "material": "Metal"
+    },
+    "IAAkaviriSamuraiCuirass": {
+    	"keywords": ["nonconductive", "brittle", "layered"],
+        "material": "Glass",
+        "construction": "Layered"
+    },
+    "IADragonhideHeavyRobe": {
+    	"keywords": ["brittle", "nonconductive", "thick"],
+        "material": "Bone",
+        "construction": "Thick"
+    },
+    "IADragonhideLRobe": {
+    	"keywords": ["brittle", "nonconductive", "thick"],
+        "material": "Bone",
+        "construction": "Thick"
+    },
+    "IADragonhideURobe": {
+    	"keywords": ["brittle", "nonconductive", "thick"],
+        "material": "Bone",
+        "construction": "Thick"
+    },
+    "IAMercenaryCuirass": {
+    	"keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "IAHeroicImperialCuirass": {
+    	"keywords": ["metal", "layered"],
+        "material": "Metal",
+        "construction": "Layered"
+    },
+    "IADwarvenMageHRobe": {
+    	"keywords": ["metal", "leathery"],
+        "material": "Metal/Leather"
+    },
+    "IADwarvenMageLRobe": {
+    	"keywords": ["metal", "leathery"],
+        "material": "Metal/Leather"
+    },
+    "IADwarvenMageURobe": {
+    	"keywords": ["metal", "leathery"],
+        "material": "Metal/Leather"
+    },
+    "IAPrimitiveNordHeavyCuirass": {
+    	"keywords": ["metal"],
+        "material": "Metal"
+    },
+    "IAPrimitiveNordLightCuirass": {
+    	"keywords": ["metal"],
+        "material": "Metal"
+    },
+    "IABarbarianCuirass": {
+    	"keywords": ["metal"],
+        "material": "Metal"
+    },
+    "IARangerCuirass": {
+    	"keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "IASeadogCuirass": {
+    	"keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "IAPaladinCuirass": {
+    	"keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    "IAHeroicStormcloakCuirass": {
+    	"keywords": ["warm", "metal", "deep"],
+        "material": "Metal/Fur",
+        "construction": "Deep"
+    },
+    "IAApotheusCuirass": {
+    	"keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "IAWitchplateCuirass": {
+    	"keywords": ["metal", "thick"],
+        "material": "Metal",
+        "construction": "Thick"
+    },
+    "IASpellbinderCrimsonCuirass": {
+    	"keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    "IASpellbinderRunicCuirass": {
+    	"keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    "IARitualBoethiahCuirass": {
+    	"keywords": ["nonconductive", "brittle", "layered"],
+        "material": "Glass",
+        "construction": "Layered"
+    },
+    "IADragonEbonBulkyCuirass": {
+    	"keywords": ["nonconductive", "brittle", "thick"],
+        "material": "Bone",
+        "construction": "Thick"
+    },
+    "IADragonEbonSleekCuirass": {
+    	"keywords": ["nonconductive", "brittle", "thick"],
+        "material": "Bone",
+        "construction": "Thick"
+    },
+    "IATrollbaneHeavyCuirass": {
+    	"keywords": ["warm", "leathery", "layered", "metal"],
+        "material": "Leather/Metal/Fur",
+        "construction": "Layered"
+    },
+    "IATrollbaneLightCuirass": {
+    	"keywords": ["warm", "leathery", "layered", "metal"],
+        "material": "Leather/Metal/Fur",
+        "construction": "Layered"
+    },
+    "IAShamanLRobe": {
+    	"keywords": ["warm"],
+        "material": "Fur"
+    },
+    "IAShamanURobe": {
+    	"keywords": ["warm"],
+        "material": "Fur"
+    },
+    "IADragonKnightCuirassFull": {
+    	"keywords": ["nonconductive", "brittle", "thick"],
+        "material": "Glass/Bone",
+        "construction": "Thick"
+    },
+    "IADragonKnightCuirassFox": {
+    	"keywords": ["nonconductive", "brittle", "thick"],
+        "material": "Glass/Bone",
+        "construction": "Thick"
+    },
+    "IAConanCuirass": {
+    	"keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "IACrimsonArcherCuirass": {
+    	"keywords": ["warm", "leathery", "layered"],
+        "material": "Leather/Fur",
+        "construction": "Layered"
+    },
+    "IABrigandDwemerScrap": {
+    	"keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    "IABrigandHighwayChain": {
+    	"keywords": ["metal", "layered"],
+        "material": "Metal",
+        "construction": "Layered"
+    },
+    "IABrigandIronHide": {
+    	"keywords": ["warm", "metal", "thick"],
+        "material": "Metal/Fur",
+        "construction": "Thick"
+    },
+    "IAAlduinCuirass": {
+    	"keywords": ["nonconductive", "brittle", "thick"],
+        "material": "Bone",
+        "construction": "Thick"
+    },
+    "IARingmailCuirass": {
+    	"keywords": ["metal", "layered"],
+        "material": "Metal",
+        "construction": "Layered"
+    },
+    "IABoiledChitinHCuirass": {
+    	"keywords": ["nonconductive", "brittle", "thick"],
+        "material": "Chitin",
+        "construction": "Thick"
+    },
+    "IABoiledChitinLCuirass": {
+    	"keywords": ["nonconductive", "brittle", "thick"],
+        "material": "Chitin",
+        "construction": "Thick"
+    },
+    "IASnowBearCuirass": {
+    	"keywords": ["warm", "leathery", "layered"],
+        "material": "Leather/Fur",
+        "construction": "Layered"
+    },
+    "IAGlacialCrystalHCuirass": {
+    	"keywords": ["nonconductive", "brittle", "layered"],
+        "material": "Stalhrim",
+        "construction": "Layered"
+    },
+    "IAGlacialCrystalLCuirass": {
+    	"keywords": ["nonconductive", "brittle", "layered"],
+        "material": "Stalhrim",
+        "construction": "Layered"
+    },
+    "IAVvardenfellGlassCuirass": {
+    	"keywords": ["nonconductive", "brittle", "thick"],
+        "material": "Glass",
+        "construction": "Thick"
+    },
+    "IABosmerCuirass": {
+    	"keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "IABosmerEngravedCuirass": {
+    	"keywords": ["leathery", "layered"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "IABosmerHeavyCuirass": {
+    	"keywords": ["leathery", "layered"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "IABosmerHuntHeavyCuirass": {
+    	"keywords": ["leathery", "layered"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "IABosmerHuntLightCuirass": {
+    	"keywords": ["leathery", "layered"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "IADaedricLordCuirass": {
+    	"keywords": ["nonconductive", "thick", "brittle"],
+        "material": "Glass",
+        "construction": "Thick"
+    },
+    "IAEbonyMageHeavyRobe": {
+    	"keywords": ["nonconductive", "brittle", "layered"]
+    },
+    "IAEbonyMageLightRobe": {
+    	"keywords": ["nonconductive", "brittle", "layered"]
+    },
+    "IAEbonyMageUnarmoredRobe": {
+    	"keywords": ["nonconductive", "brittle", "layered"]
+    },
+    "IAStormlordCuirass": {
+    	"keywords": ["metal", "warm", "deep"],
+        "material": "Metal/Fur",
+        "construction": "Deep"
+    },
+    "IAImperialKnightCuirass": {
+    	"keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+	"ArmorMaterialBearStormcloak": {
+		"keywords": ["warm", "leathery", "layered"],
+		"material": "Fur/Leather",
+		"construction": "Layered"
+	},
+	"ArmorMaterialBlades": {
+        "keywords": ["metal", "layered"],
+        "material": "Metal",
+        "construction": "Layered"
+    },
+    "ArmorMaterialDaedric": {
+        "keywords": ["nonconductive", "brittle", "thick"],
+        "material": "Glass",
+        "construction": "Thick"
+    },
+    "ArmorMaterialDragonplate": {
+    	"keywords": ["nonconductive", "brittle", "thick", "deep"],
+        "material": "Bone",
+        "construction": "Deep/Thick"
+    },
+    "ArmorMaterialDragonscale": {
+        "keywords": ["nonconductive", "layered", "thick"],
+        "material": "Glass",
+        "construction": "Thick/Layered"
+    },
+    "ArmorMaterialDwarven": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    "ArmorMaterialEbony": {
+        "keywords": ["nonconductive", "brittle", "deep"],
+        "material": "Glass",
+        "construction": "Deep"
+    },
+    "ArmorMaterialElven": {
+        "keywords": ["nonconductive", "brittle", "layered"],
+        "material": "Glass",
+        "construction": "Layered"
+    },
+    "ArmorMaterialElvenGilded": {
+        "keywords": ["nonconductive", "brittle", "layered"],
+        "material": "Glass",
+        "construction": "Layered"
+    },
+    "ArmorMaterialFalmer": {
+        "keywords": ["thick", "brittle"],
+        "material": "Chitin",
+        "construction": "Thick"
+    },
+    "DLC1ArmorMaterielFalmerHeavyOriginal": {
+        "keywords": ["thick", "brittle"],
+        "material": "Chitin",
+        "construction": "Thick"
+    },
+    "ArmorMaterialForsworn": {
+        "keywords": ["warm"],
+        "material": "Fur"
+    },
+    "ArmorMaterialGlass": {
+        "keywords": ["thick", "nonconductive", "brittle"],
+        "material": "Glass",
+        "construction": "Thick"
+    },
+    "ArmorMaterialHide": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorMaterialImperialHeavy": {
+        "keywords": ["metal", "layered"],
+        "material": "Metal",
+        "construction": "Layered"
+    },
+    "ArmorMaterialImperialLight": {
+        "keywords": ["leathery", "layered"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "ArmorMaterialImperialStudded": {
+        "keywords": ["leathery", "layered"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "ArmorMaterialIron": {
+        "keywords": ["metal", "thick"],
+        "material": "Metal",
+        "construction": "Thick"
+    },
+    "ArmorMaterialIronBanded": {
+        "keywords": ["metal", "warm", "thick"],
+        "material": "Metal/Fur",
+        "construction": "Thick"
+    },
+    "ArmorMaterialLeather": {
+        "keywords": ["leathery", "layered"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "ArmorMaterialMS02Forsworn": {
+        "keywords": ["warm"],
+        "material": "Fur"
+    },
+    "ArmorMaterialOrcish": {
+        "keywords": ["metal", "layered"],
+        "material": "Metal",
+        "construction": "Layered"
+    },
+    "ArmorMaterialPenitus": {
+        "keywords": ["metal", "layered"],
+        "material": "Metal",
+        "construction": "Layered"
+    },
+    "ArmorMaterialScaled": {
+        "keywords": ["warm", "leathery", "layered"],
+        "material": "Fur/Leather",
+        "construction": "Layered"
+    },
+    "ArmorMaterialSteel": {
+        "keywords": ["metal", "warm", "thick"],
+        "material": "Metal/Fur",
+        "construction": "Thick"
+    },
+    "ArmorMaterialSteelPlate": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    "ArmorMaterialStormcloak": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorMaterialStudded": {
+        "keywords": ["leathery", "layered"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "ArmorMaterialThievesGuild": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorMaterialThievesGuildLeader": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "DLC1ArmorMaterialDawnguard": {
+        "keywords": ["leathery", "layered"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "DLC1ArmorMaterialFalmerHardened": {
+        "keywords": ["thick", "brittle"],
+        "material": "Chitin",
+        "construction": "Thick"
+    },
+    "DLC1ArmorMaterialHunter": {
+        "keywords": ["layered", "leathery"],
+        "material": "Leather",
+        "construction": "Layered"
+    },
+    "DLC1ArmorMaterielFalmerHeavy": {
+        "keywords": ["brittle"],
+        "material": "Chitin",
+        "construction": "Thick"
+    },
+    "DLC1ArmorMaterialFalmerHeavyOriginal": {
+        "keywords": ["brittle"],
+        "material": "Chitin",
+        "construction": "Thick"
+    },
+    "DLC2ArmorMaterialBonemoldHeavy": {
+        "keywords": ["thick", "nonconductive"],
+        "material": "Bone",
+        "construction": "Thick/Layered"
+    },
+    "DLC2ArmorMaterialBonemoldLight": {
+        "keywords": ["thick", "nonconductive"],
+        "material": "Bone",
+        "construction": "Thick/Layered"
+    },
+    "DLC2ArmorMaterialChitinHeavy": {
+        "keywords": ["thick", "brittle"],
+        "material": "Chitin",
+        "construction": "Thick"
+    },
+    "DLC2ArmorMaterialChitinLight": {
+        "keywords": ["thick", "brittle"],
+        "material": "Chitin",
+        "construction": "Thick"
+    },
+    "DLC2ArmorMaterialMoragTong": {
+        "keywords": ["thick", "brittle"],
+        "material": "Chitin",
+        "construction": "Thick"
+    },
+    "DLC2ArmorMaterialNordicHeavy": {
+        "keywords": ["metal", "leathery", "layered"],
+        "material": "Metal/Leather",
+        "construction": "Layered"
+    },
+    "DLC2ArmorMaterialNordicLight": {
+        "keywords": ["metal", "leathery", "layered"],
+        "material": "Metal/Leather",
+        "construction": "Layered"
+    },
+    "DLC2ArmorMaterialStalhrimHeavy": {
+        "keywords": ["thick", "warm", "nonconductive"],
+        "material": "Stalhrim/Fur",
+        "construction": "Thick"
+    },
+    "DLC2ArmorMaterialStalhrimLight": {
+        "keywords": ["thick", "warm", "nonconductive"],
+        "material": "Stalhrim/Fur",
+        "construction": "Thick"
+    },
+    "ArmorBrigand1": {
+        "keywords": ["warm"],
+        "material": "Fur"
+    },
+    "ArmorBrigand2": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand3": {
+        "keywords": ["metal", "thick"],
+        "material": "Metal",
+        "construction": "Thick"
+    },
+    "ArmorBrigand4": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand5": {
+        "keywords": ["metal", "leathery"],
+        "material": "Metal/Leather"
+    },
+    "ArmorBrigand6": {
+        "keywords": ["warm", "leathery"],
+        "material": "Fur/Leather"
+    },
+    "ArmorBrigand7": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand8": {
+        "keywords": ["warm", "leathery"],
+        "material": "Fur/Leather"
+    },
+    "ArmorBrigand9": {
+        "keywords": ["warm", "thick"],
+        "material": "Fur",
+        "construction": "Thick"
+    },
+    "ArmorBrigand10": {
+        "keywords": ["metal", "warm", "thick"],
+        "material": "Metal/Fur",
+        "construction": "Thick"
+    },
+    "ArmorBrigand11": {
+        "keywords": ["metal", "leathery"],
+        "material": "Metal/Leather"
+    },
+    "ArmorBrigand12": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    "ArmorBrigand13": {
+        "keywords": ["metal", "leathery"],
+        "material": "Metal/Leather"
+    },
+    "ArmorBrigand14": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand15": {
+        "keywords": ["warm"],
+        "material": "Fur"
+    },
+    "ArmorBrigand16": {
+        "keywords": ["warm", "leathery"],
+        "material": "Fur/Leather"
+    },
+    "ArmorBrigand17": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand18": {
+        "keywords": ["warm"],
+        "material": "Fur"
+    },
+    "ArmorBrigand19": {
+        "keywords": ["warm", "thick"],
+        "material": "Fur",
+        "construction": "Thick"
+    },
+    "ArmorBrigand20": {
+        "keywords": ["metal", "thick"],
+        "material": "Metal",
+        "construction": "Thick"
+    },
+    "ArmorBrigand21": {
+        "keywords": ["warm", "metal", "thick"],
+        "material": "Metal/Fur",
+        "construction": "Thick"
+    },
+    "ArmorBrigand22": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand23": {
+        "keywords": ["warm"],
+        "material": "Fur"
+    },
+    "ArmorBrigand24": {
+        "keywords": ["warm"],
+        "material": "Fur"
+    },
+    "ArmorBrigand25": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand26": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand27": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand28": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand29": {
+        "keywords": ["warm", "leathery"],
+        "material": "Fur/Leather"
+    },
+    "ArmorBrigand30": {
+        "keywords": ["warm", "leathery", "layered"],
+        "material": "Fur/Leather",
+        "construction": "Layered"
+    },
+    "ArmorBrigand31": {
+        "keywords": ["metal"],
+        "material": "Metal"
+    },
+    "ArmorBrigand32": {
+        "keywords": ["metal", "thick"],
+        "material": "Metal",
+        "construction": "Thick"
+    },
+    "ArmorBrigand33": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand34": {
+        "keywords": ["metal"],
+        "material": "Metal"
+    },
+    "ArmorBrigand35": {
+        "keywords": ["leathery"],
+        "material": "Leather"
+    },
+    "ArmorBrigand36": {
+        "keywords": ["metal", "thick"],
+        "material": "Metal",
+        "construction": "Thick"
+    },
+    "AA00ArmorDECuirass": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    " AA00ArmorDFGKCuirass1": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    " AA00ArmorDFGKCuirass2": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    " AA00ArmorDFGKCuirass3": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    " AA00ArmorDFGKCuirass4": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    " AA00ArmorDFGKCuirass5": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    " AA00ArmorDFGKCuirass6": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    " AA00ArmorDFGKCuirass7": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    " AA00ArmorDFGKCuirass8": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    },
+    " AA00ArmorDFGKCuirass9": {
+        "keywords": ["metal", "deep"],
+        "material": "Metal",
+        "construction": "Deep"
+    }
+}
