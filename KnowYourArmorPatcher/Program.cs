@@ -169,15 +169,12 @@ namespace KnowYourArmorPatcher
                     }
                 }
 
-                if (foundEDIDs.Any())
+                foreach (string foundEDID in foundEDIDs)
                 {
-                    foreach (string foundEDID in foundEDIDs)
+                    foreach(string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!["keywords"]!).ToObject<string[]>()!)
                     {
-                        foreach(string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!["keywords"]!).ToObject<string[]>()!)
-                        {
-                            if (!armorKeywordsToAdd.Contains(keywordToAdd))
-                                armorKeywordsToAdd.Add(keywordToAdd);
-                        }
+                        if (!armorKeywordsToAdd.Contains(keywordToAdd))
+                            armorKeywordsToAdd.Add(keywordToAdd);
                     }
                 }
 
@@ -186,7 +183,6 @@ namespace KnowYourArmorPatcher
                 // Add keywords that are to be added to armor
                 foreach(string? keyword in armorKeywordsToAdd)
                 {
-                    Console.WriteLine(keyword);
                     if (keyword != null) armorCopy!.Keywords!.Add(armorKeywords[keyword]);
                 }
                 state.PatchMod.Armors.Add(armorCopy);
