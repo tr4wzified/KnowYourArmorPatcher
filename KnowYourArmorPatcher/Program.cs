@@ -9,7 +9,6 @@ using Noggog;
 using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Wabbajack.Common;
 using Newtonsoft.Json.Linq;
-using Alphaleonis.Win32.Filesystem;
 
 namespace KnowYourArmorPatcher
 {
@@ -36,7 +35,7 @@ namespace KnowYourArmorPatcher
                 return magnitude;
             if (magnitude > 1)
                 return (magnitude - 1) * scale + 1;
-            return 1 / AdjustDamageMod(1 / magnitude, scale);
+            return 1 / AdjustEffectMagnitude(1 / magnitude, scale);
         }
 
         private static IEnumerable<string> GetFromJson(string key, JObject jObject)
@@ -44,27 +43,52 @@ namespace KnowYourArmorPatcher
             return jObject.ContainsKey(key) ? jObject[key]!.Select(x => (string?) x).Where(x => x != null).Select(x => x!).ToList() : new List<string>();
         }
 
-        public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
+        private static readonly Tuple<string, uint>[] armorKeywordsTuple =
         {
-            if (!File.Exists("armor_rules.json"))
-                throw new Exception("Required file armor_rules.json does not exist!");
-            if (!File.Exists("misc.json"))
-                throw new Exception("Required file misc.json does not exist!");
-            if (!File.Exists("settings.json"))
-                throw new Exception("Required file settings.json does not exist!");
+            new Tuple<string, uint> ("full", 0x0B6D03),
+            new Tuple<string, uint> ("warm", 0x0B6D04),
+            new Tuple<string, uint> ("leathery", 0x0B6D05),
+            new Tuple<string, uint> ("brittle", 0x0B6D06),
+            new Tuple<string, uint> ("nonconductive", 0x0B6D07),
+            new Tuple<string, uint> ("thick", 0x0B6D08),
+            new Tuple<string, uint> ("metal", 0x0B6D09),
+            new Tuple<string, uint> ("layered", 0x0B6D0A),
+            new Tuple<string, uint> ("deep", 0x0B6D0B),
+        };
 
-            var armorRules = JObject.Parse(File.ReadAllText("armor_rules.json"));
-            var misc = JObject.Parse(File.ReadAllText("misc.json"));
-            var settings = JObject.Parse(File.ReadAllText("settings.json"));
-            var armorRaces = GetFromJson("armor_races", misc).ToList();
-
-            float effectIntensity = (float)settings["effect_intensity"];
-
+        public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
+        { 
             if (!state.LoadOrder.ContainsKey(ModKey.FromNameAndExtension("know_your_enemy.esp")))
             {
                 Console.WriteLine("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
                 return;
             }
+
+            string[] requiredFiles = { "armor_rules.json", "misc.json", "settings.json" };
+            foreach (string file in requiredFiles)
+            {
+                if (!File.Exists(file)) throw new Exception("Required file " + file + " does not exist! Make sure to copy all files over when installing the patcher, and don't run it from within an archive.");
+            }
+
+            var armorRulesJson = JObject.Parse(File.ReadAllText("armor_rules.json"));
+            var miscJson = JObject.Parse(File.ReadAllText("misc.json"));
+            var settingsJson = JObject.Parse(File.ReadAllText("settings.json"));
+
+            // Converting to list because .Contains in Newtonsoft.JSON has weird behavior
+            List<string> armorRaces = GetFromJson("armor_races", miscJson).ToList();
+            List<string> ignoredArmors = GetFromJson("ignored_armors", miscJson).ToList();
+
+            float effectIntensity = (float)settingsJson["effect_intensity"]!;
+
+            Dictionary<string, Keyword> armorKeywords = armorKeywordsTuple.Select(tuple =>
+            {
+                var (key, id) = tuple;
+                state.LinkCache.TryLookup<IKeywordGetter>(new FormKey("know_your_enemy.esp", id), out var keyword);
+                if (perk != null) return (key, keyword: keyword.DeepCopy());
+                else throw new Exception("Failed to find perk with key: " + key + " and id " + id);
+            }).Where(x => x.perk != null)
+        .ToDictionary(x => x.key, x => x.perk!, StringComparer.OrdinalIgnoreCase);
+
 
             if (!state.LinkCache.TryLookup<IPerkGetter>(new FormKey("know_your_enemy.esp", 0x0B6D0D), out var perkLink))
                 throw new Exception("Unable to find required perk know_your_enemy.esp:0x0B6D0D");
@@ -92,8 +116,8 @@ namespace KnowYourArmorPatcher
                 }
             }
 
-                // Part 2
-                // Adjust the magnitude of KYE's effects according to the effectIntensity settings
+            // Part 2
+            // Adjust the magnitude of KYE's effects according to the effectIntensity settings
 
             if (!effectIntensity.EqualsWithin(1))
             {
@@ -109,16 +133,22 @@ namespace KnowYourArmorPatcher
             }
 
             // Part 3
+            // Add the keywords to each armor
             foreach (var armor in state.LoadOrder.PriorityOrder.WinningOverrides<IArmorGetter>())
             {
-                if (misc["ignored_armors"].Contains(armor.EditorID)) continue;
-                if (armor.Keywords != null && armor.Keywords.Contains(Skyrim.Keyword.ArmorCuirass)) continue;
-                //TODO: if (!xelib.HasElement(record, 'TNAM')) return true;
-                //TODO: check if template TNAM is empty
+                if (armor.EditorID == null) continue;
+                if (ignoredArmors.Contains(armor.EditorID)) continue;
+                if (armor.Keywords != null && !armor.Keywords.Contains(Skyrim.Keyword.ArmorCuirass)) continue;
+                if (!armor.TemplateArmor.IsNull) continue;
+                if (armorRulesJson[armor.EditorID.ToString()] == null) continue;
 
-                if (!armorRules.Contains(armor.EditorID)) continue;
-                var armorTraits = armorRules[armor.EditorID];
-                                                
+                Armor armorCopy = armor.DeepCopy();
+                JArray keywords = (JArray)armorRulesJson[armor.EditorID.ToString()]!["keywords"]!;
+
+                foreach(string? keyword in keywords)
+                {
+                    if (keyword != null) armorCopy!.Keywords!.Add(armorKeywords[keyword]);
+                }
             }
         }
     }
