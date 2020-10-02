@@ -84,15 +84,28 @@ namespace KnowYourArmorPatcher
             {
                 var (key, id) = tuple;
                 state.LinkCache.TryLookup<IKeywordGetter>(new FormKey("know_your_enemy.esp", id), out var keyword);
-                if (perk != null) return (key, keyword: keyword.DeepCopy());
+                if (keyword != null) return (key, keyword: keyword.DeepCopy());
                 else throw new Exception("Failed to find perk with key: " + key + " and id " + id);
-            }).Where(x => x.perk != null)
-        .ToDictionary(x => x.key, x => x.perk!, StringComparer.OrdinalIgnoreCase);
+            }).Where(x => x.keyword != null)
+        .ToDictionary(x => x.key, x => x.keyword!, StringComparer.OrdinalIgnoreCase);
 
 
             if (!state.LinkCache.TryLookup<IPerkGetter>(new FormKey("know_your_enemy.esp", 0x0B6D0D), out var perkLink))
                 throw new Exception("Unable to find required perk know_your_enemy.esp:0x0B6D0D");
 
+            // Returns all keywords from an armor that are found in armor rules json 
+        List<string> ArmorKeywordIsInArmorRules(Armor armor)
+        {
+            List<string> foundEDIDs = new List<string>();
+            if (armor.Keywords == null) return foundEDIDs;
+            foreach(var keyword in armor.Keywords)
+            {
+                if (keyword.TryResolve<IKeywordGetter>(state.LinkCache, out var kw)) {
+                        if (kw.EditorID != null && armorRulesJson![kw.EditorID.ToString()] != null) foundEDIDs.Add(kw.EditorID);
+                }
+            }
+            return foundEDIDs;
+        }
 
             // Part 1
             // Add the armor perk to all relevant NPCs
@@ -137,18 +150,46 @@ namespace KnowYourArmorPatcher
             foreach (var armor in state.LoadOrder.PriorityOrder.WinningOverrides<IArmorGetter>())
             {
                 if (armor.EditorID == null) continue;
-                if (ignoredArmors.Contains(armor.EditorID)) continue;
-                if (armor.Keywords != null && !armor.Keywords.Contains(Skyrim.Keyword.ArmorCuirass)) continue;
+                if (ignoredArmors.Contains(armor.EditorID.ToString()!)) continue;
+                if (armor.Keywords == null || !armor.Keywords.Contains(Skyrim.Keyword.ArmorCuirass)) continue;
                 if (!armor.TemplateArmor.IsNull) continue;
-                if (armorRulesJson[armor.EditorID.ToString()] == null) continue;
-
                 Armor armorCopy = armor.DeepCopy();
-                JArray keywords = (JArray)armorRulesJson[armor.EditorID.ToString()]!["keywords"]!;
+                List<string> armorKeywordsToAdd = new List<string>();
 
-                foreach(string? keyword in keywords)
+                List<string> foundEDIDs = ArmorKeywordIsInArmorRules(armorCopy);
+                if (armorRulesJson[armor.EditorID.ToString()] == null && !foundEDIDs.Any()) continue;
+
+                if (armorRulesJson[armor.EditorID.ToString()] != null)
                 {
+                    foreach (string? keywordToAdd in ((JArray)armorRulesJson[armor.EditorID.ToString()!]!["keywords"]!).ToObject<string[]>()!)
+                    {
+                        if (keywordToAdd != null && !armorKeywordsToAdd.Contains(keywordToAdd))
+                            armorKeywordsToAdd.Add(keywordToAdd);
+
+                    }
+                }
+
+                if (foundEDIDs.Any())
+                {
+                    foreach (string foundEDID in foundEDIDs)
+                    {
+                        foreach(string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!["keywords"]!).ToObject<string[]>()!)
+                        {
+                            if (!armorKeywordsToAdd.Contains(keywordToAdd))
+                                armorKeywordsToAdd.Add(keywordToAdd);
+                        }
+                    }
+                }
+
+                //Console.WriteLine(armor.EditorID + " is going to receive " + keywords.Count + " keywords.");
+
+                // Add keywords that are to be added to armor
+                foreach(string? keyword in armorKeywordsToAdd)
+                {
+                    Console.WriteLine(keyword);
                     if (keyword != null) armorCopy!.Keywords!.Add(armorKeywords[keyword]);
                 }
+                state.PatchMod.Armors.Add(armorCopy);
             }
         }
     }
