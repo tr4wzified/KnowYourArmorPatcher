@@ -9,6 +9,7 @@ using Noggog;
 using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Wabbajack.Common;
 using Newtonsoft.Json.Linq;
+using System.Text;
 
 namespace KnowYourArmorPatcher
 {
@@ -56,12 +57,29 @@ namespace KnowYourArmorPatcher
             new Tuple<string, uint> ("deep", 0x0B6D0B),
         };
 
+        private static string GenerateDescription(List<string> recordEDIDs, JObject armorRulesJson)
+        {
+            StringBuilder description = new StringBuilder();
+            foreach (string recordEDID in recordEDIDs) {
+                if (armorRulesJson[recordEDID] != null)
+                {
+                    if (armorRulesJson[recordEDID]!["material"] != null)
+                        description.Append("Material: " + armorRulesJson[recordEDID]!["material"] + " ");
+                    if (armorRulesJson[recordEDID]!["construction"] != null)
+                        description.Append("Construction: " + armorRulesJson[recordEDID]!["construction"] + " ");
+                    if (description.Length != 0)
+                        description.Append(".");
+
+                }
+            }
+            return description.ToString();
+        }
+
         public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
         { 
             if (!state.LoadOrder.ContainsKey(ModKey.FromNameAndExtension("know_your_enemy.esp")))
             {
-                Console.WriteLine("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
-                return;
+                throw new Exception("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
             }
 
             string[] requiredFiles = { "armor_rules.json", "misc.json", "settings.json" };
@@ -101,7 +119,7 @@ namespace KnowYourArmorPatcher
             foreach(var keyword in armor.Keywords)
             {
                 if (keyword.TryResolve<IKeywordGetter>(state.LinkCache, out var kw)) {
-                        if (kw.EditorID != null && armorRulesJson![kw.EditorID.ToString()] != null) foundEDIDs.Add(kw.EditorID);
+                        if (kw.EditorID != null && armorRulesJson![kw.EditorID] != null) foundEDIDs.Add(kw.EditorID);
                 }
             }
             return foundEDIDs;
@@ -115,7 +133,7 @@ namespace KnowYourArmorPatcher
 
                 if (npc.Keywords != null && npc.Keywords.Contains(Skyrim.Keyword.ActorTypeGhost)) continue;
 
-                if (npc.Race.TryResolve(state.LinkCache, out var race) && race.EditorID != null && armorRaces.Contains(race.EditorID.ToString()))
+                if (npc.Race.TryResolve(state.LinkCache, out var race) && race.EditorID != null && armorRaces.Contains(race.EditorID))
                 {
                     var perk = perkLink.DeepCopy();
                     var npcCopy = state.PatchMod.Npcs.GetOrAddAsOverride(npc);
@@ -150,18 +168,18 @@ namespace KnowYourArmorPatcher
             foreach (var armor in state.LoadOrder.PriorityOrder.WinningOverrides<IArmorGetter>())
             {
                 if (armor.EditorID == null) continue;
-                if (ignoredArmors.Contains(armor.EditorID.ToString()!)) continue;
+                if (ignoredArmors.Contains(armor.EditorID)) continue;
                 if (armor.Keywords == null || !armor.Keywords.Contains(Skyrim.Keyword.ArmorCuirass)) continue;
                 if (!armor.TemplateArmor.IsNull) continue;
                 Armor armorCopy = armor.DeepCopy();
                 List<string> armorKeywordsToAdd = new List<string>();
 
                 List<string> foundEDIDs = ArmorKeywordIsInArmorRules(armorCopy);
-                if (armorRulesJson[armor.EditorID.ToString()] == null && !foundEDIDs.Any()) continue;
+                if (armorRulesJson[armor.EditorID] == null && !foundEDIDs.Any()) continue;
 
-                if (armorRulesJson[armor.EditorID.ToString()] != null)
+                if (armorRulesJson[armor.EditorID] != null)
                 {
-                    foreach (string? keywordToAdd in ((JArray)armorRulesJson[armor.EditorID.ToString()!]!["keywords"]!).ToObject<string[]>()!)
+                    foreach (string? keywordToAdd in ((JArray)armorRulesJson[armor.EditorID]!["keywords"]!).ToObject<string[]>()!)
                     {
                         if (keywordToAdd != null && !armorKeywordsToAdd.Contains(keywordToAdd))
                             armorKeywordsToAdd.Add(keywordToAdd);
@@ -183,8 +201,11 @@ namespace KnowYourArmorPatcher
                 // Add keywords that are to be added to armor
                 foreach(string? keyword in armorKeywordsToAdd)
                 {
-                    if (keyword != null) armorCopy!.Keywords!.Add(armorKeywords[keyword]);
+                    if (keyword != null) armorCopy.Keywords!.Add(armorKeywords[keyword]);
                 }
+                armorKeywordsToAdd.Insert(0, armorCopy.EditorID!);
+                Console.WriteLine(GenerateDescription(armorKeywordsToAdd, armorRulesJson));
+                //Console.WriteLine("Description: " + GenerateDescription(armorCopy, armorRulesJson));
                 state.PatchMod.Armors.Add(armorCopy);
             }
         }
