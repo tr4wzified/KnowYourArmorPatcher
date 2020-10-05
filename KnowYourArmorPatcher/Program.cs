@@ -57,19 +57,101 @@ namespace KnowYourArmorPatcher
             new Tuple<string, uint> ("deep", 0x0B6D0B),
         };
 
-        private static string GenerateDescription(List<string> recordEDIDs, JObject armorRulesJson)
+        private static void QuickAppend(StringBuilder description, string name, float num)
+        {
+            if (num != 1) description.Append(" " + name + " x" + Math.Round(num, 2) + ",");
+        }
+        private static string GenerateDescription(SynthesisState<ISkyrimMod, ISkyrimModGetter> state, string recordEDID, JObject armorRulesJson, float effectIntensity)
         {
             StringBuilder description = new StringBuilder();
-            foreach (string recordEDID in recordEDIDs) {
-                if (armorRulesJson[recordEDID] != null)
+            if (armorRulesJson[recordEDID] != null)
+            {
+                if (armorRulesJson[recordEDID]!["material"] != null)
                 {
-                    if (armorRulesJson[recordEDID]!["material"] != null)
-                        description.Append("Material: " + armorRulesJson[recordEDID]!["material"] + " ");
-                    if (armorRulesJson[recordEDID]!["construction"] != null)
-                        description.Append("Construction: " + armorRulesJson[recordEDID]!["construction"] + " ");
-                    if (description.Length != 0)
-                        description.Append(".");
+                    description.Append("Material: " + armorRulesJson[recordEDID]!["material"]!.ToString());
+                }
+                if (armorRulesJson[recordEDID]!["construction"] != null)
+                {
+                    if (description.Length != 0) description.Append(" ");
+                    description.Append("Construction: " + armorRulesJson[recordEDID]!["construction"]);
+                }
+                if (description.Length != 0) description.Append(".");
 
+                if (armorRulesJson[recordEDID]!["keywords"] != null)
+                {
+                    float fire = 1,
+                        frost = 1,
+                        shock = 1,
+                        blade = 1,
+                        axe = 1,
+                        blunt = 1,
+                        arrows = 1,
+                        earth = 1,
+                        water = 1,
+                        wind = 1;
+
+                    string[] keywords = ((JArray)(armorRulesJson[recordEDID]!["keywords"]!)).ToObject<string[]>()!;
+                    if (keywords.Contains("warm"))
+                    {
+                        arrows *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        frost *= AdjustEffectMagnitude(0.5f, effectIntensity);
+                        water *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        wind *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                    }
+
+                    if (keywords.Contains("leathery"))
+                    {
+                        arrows *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        fire *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        wind *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        water *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                    }
+                    if (keywords.Contains("brittle"))
+                    {
+                        blunt *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        water *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        earth *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                    }
+                    if (keywords.Contains("thick"))
+                    {
+                        arrows *= AdjustEffectMagnitude(0.5f, effectIntensity);
+                        blade *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                        wind *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                    }
+                    if (keywords.Contains("metal"))
+                    {
+                        arrows *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                        blade *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                        shock *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        earth *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                        water *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                    }
+                    if (keywords.Contains("layered"))
+                    {
+                        arrows *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                        wind *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                    }
+                    if (keywords.Contains("deep"))
+                    {
+                        blunt *= AdjustEffectMagnitude(0.5f, effectIntensity);
+                        axe *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                        earth *= AdjustEffectMagnitude(0.75f, effectIntensity);
+                    }
+                    QuickAppend(description, "Fire", fire);
+                    QuickAppend(description, "Frost", frost);
+                    QuickAppend(description, "Shock", shock);
+                    QuickAppend(description, "Blade", blade);
+                    QuickAppend(description, "Axe", axe);
+                    QuickAppend(description, "Blunt", blunt);
+                    QuickAppend(description, "Arrows", arrows);
+
+                    // If load order contains Know Your Elements, write descriptions for water + wind + earth
+                    if (state.LoadOrder.ContainsKey(ModKey.FromNameAndExtension("Know Your Elements.esp")))
+                    {
+                        QuickAppend(description, "Water", water);
+                        QuickAppend(description, "Wind", wind);
+                        QuickAppend(description, "Earth", earth);
+                    }
                 }
             }
             return description.ToString();
@@ -181,10 +263,15 @@ namespace KnowYourArmorPatcher
                 {
                     foreach (string? keywordToAdd in ((JArray)armorRulesJson[armor.EditorID]!["keywords"]!).ToObject<string[]>()!)
                     {
-                        if (keywordToAdd != null && !armorKeywordsToAdd.Contains(keywordToAdd))
+                        if (keywordToAdd != null && !armorKeywordsToAdd.Contains(keywordToAdd)) {
                             armorKeywordsToAdd.Add(keywordToAdd);
+                        }
 
                     }
+                }
+                else
+                {
+                    armorCopy.Description = new TranslatedString(GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity));
                 }
 
                 foreach (string foundEDID in foundEDIDs)
@@ -203,9 +290,19 @@ namespace KnowYourArmorPatcher
                 {
                     if (keyword != null) armorCopy.Keywords!.Add(armorKeywords[keyword]);
                 }
-                armorKeywordsToAdd.Insert(0, armorCopy.EditorID!);
-                Console.WriteLine(GenerateDescription(armorKeywordsToAdd, armorRulesJson));
-                //Console.WriteLine("Description: " + GenerateDescription(armorCopy, armorRulesJson));
+
+                // DEBUG - remove later
+                if (armorCopy.Description != null)
+                {
+                    if (armorCopy.FormKey.ID == 0x012E49)
+                    {
+                        Console.WriteLine("ARMOR EDID: " + armorCopy.EditorID + " ARMOR DESC:" + armorCopy.Description.ToString());
+                    }
+                    else if (armorCopy.FormKey.ID == 0x403AB26)
+                    {
+                        Console.WriteLine("ARMOR EDID: " + armorCopy.EditorID + " ARMOR DESC:" + armorCopy.Description.ToString());
+                    }
+                }
                 state.PatchMod.Armors.Add(armorCopy);
             }
         }
