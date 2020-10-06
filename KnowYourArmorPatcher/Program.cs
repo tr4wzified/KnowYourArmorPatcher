@@ -10,7 +10,6 @@ using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Wabbajack.Common;
 using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Reflection.Metadata.Ecma335;
 using System.Globalization;
 
 namespace KnowYourArmorPatcher
@@ -43,7 +42,7 @@ namespace KnowYourArmorPatcher
 
         private static IEnumerable<string> GetFromJson(string key, JObject jObject)
         {
-            return jObject.ContainsKey(key) ? jObject[key]!.Select(x => (string?) x).Where(x => x != null).Select(x => x!).ToList() : new List<string>();
+            return jObject.ContainsKey(key) ? jObject[key]!.Select(x => (string?)x).Where(x => x != null).Select(x => x!).ToList() : new List<string>();
         }
 
         private static readonly Tuple<string, uint>[] armorKeywordsTuple =
@@ -171,13 +170,13 @@ namespace KnowYourArmorPatcher
         }
 
         public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
-        { 
+        {
             if (!state.LoadOrder.ContainsKey(ModKey.FromNameAndExtension("know_your_enemy.esp")))
             {
                 throw new Exception("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
             }
 
-            string[] requiredFiles = { "armor_rules.json", "misc.json", "settings.json"};
+            string[] requiredFiles = { "armor_rules.json", "misc.json", "settings.json" };
             foreach (string file in requiredFiles)
             {
                 if (!File.Exists(file)) throw new Exception("Required file " + file + " does not exist! Make sure to copy all files over when installing the patcher, and don't run it from within an archive.");
@@ -194,27 +193,30 @@ namespace KnowYourArmorPatcher
             float effectIntensity = (float)settingsJson["effect_intensity"]!;
             bool patchArmorDescriptions = (bool)settingsJson["patch_armor_descriptions"]!;
 
-            Dictionary<string, Keyword> armorKeywords = armorKeywordsTuple.Select(tuple =>
-            {
-                var (key, id) = tuple;
-                state.LinkCache.TryLookup<IKeywordGetter>(new FormKey("know_your_enemy.esp", id), out var keyword);
-                if (keyword != null) return (key, keyword: keyword.DeepCopy());
-                else throw new Exception("Failed to find perk with key: " + key + " and id " + id);
-            }).Where(x => x.keyword != null)
-        .ToDictionary(x => x.key, x => x.keyword!, StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, Keyword> armorKeywords = armorKeywordsTuple
+                .Select(tuple =>
+                {
+                    var (key, id) = tuple;
+                    state.LinkCache.TryLookup<IKeywordGetter>(new FormKey("know_your_enemy.esp", id), out var keyword);
+                    if (keyword != null) return (key, keyword: keyword.DeepCopy());
+                    else throw new Exception("Failed to find perk with key: " + key + " and id " + id);
+                })
+                .Where(x => x.keyword != null)
+                .ToDictionary(x => x.key, x => x.keyword!, StringComparer.OrdinalIgnoreCase);
 
 
             if (!state.LinkCache.TryLookup<IPerkGetter>(new FormKey("know_your_enemy.esp", 0x0B6D0D), out var perkLink))
                 throw new Exception("Unable to find required perk know_your_enemy.esp:0x0B6D0D");
 
             // Returns all keywords from an armor that are found in armor rules json 
-        List<string> GetRecognizedKeywords(Armor armor)
-        {
-            List<string> foundEDIDs = new List<string>();
-            if (armor.Keywords == null) return foundEDIDs;
-            foreach(var keyword in armor.Keywords)
+            List<string> GetRecognizedKeywords(Armor armor)
             {
-                if (keyword.TryResolve<IKeywordGetter>(state.LinkCache, out var kw)) {
+                List<string> foundEDIDs = new List<string>();
+                if (armor.Keywords == null) return foundEDIDs;
+                foreach (var keyword in armor.Keywords)
+                {
+                    if (keyword.TryResolve<IKeywordGetter>(state.LinkCache, out var kw))
+                    {
                         if (kw.EditorID != null && armorRulesJson![kw.EditorID] != null)
                         {
                             // Make sure ArmorMaterialIron comes first - fixes weird edge case generating descriptions when ArmorMaterialIronBanded is also in there
@@ -227,10 +229,10 @@ namespace KnowYourArmorPatcher
                                 foundEDIDs.Add(kw.EditorID);
                             }
                         }
+                    }
                 }
+                return foundEDIDs;
             }
-            return foundEDIDs;
-        }
 
             // Part 1
             // Add the armor perk to all relevant NPCs
@@ -287,7 +289,7 @@ namespace KnowYourArmorPatcher
                 foreach (string foundEDID in foundEDIDs)
                 {
                     // Get KYE keywords connected to recognized armor keyword
-                    foreach(string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!["keywords"]!).ToObject<string[]>()!)
+                    foreach (string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!["keywords"]!).ToObject<string[]>()!)
                     {
                         if (!armorKeywordsToAdd.Contains(keywordToAdd))
                             armorKeywordsToAdd.Add(keywordToAdd);
@@ -303,7 +305,8 @@ namespace KnowYourArmorPatcher
                 {
                     foreach (string? keywordToAdd in ((JArray)armorRulesJson[armor.EditorID]!["keywords"]!).ToObject<string[]>()!)
                     {
-                        if (keywordToAdd != null && !armorKeywordsToAdd.Contains(keywordToAdd)) {
+                        if (keywordToAdd != null && !armorKeywordsToAdd.Contains(keywordToAdd))
+                        {
                             armorKeywordsToAdd.Add(keywordToAdd);
                         }
 
@@ -312,7 +315,7 @@ namespace KnowYourArmorPatcher
                 }
 
                 // Add keywords that are to be added to armor
-                foreach(string? keyword in armorKeywordsToAdd)
+                foreach (string? keyword in armorKeywordsToAdd)
                 {
                     if (keyword != null) armorCopy.Keywords!.Add(armorKeywords[keyword]);
                 }
