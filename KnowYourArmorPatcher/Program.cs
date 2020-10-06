@@ -177,7 +177,7 @@ namespace KnowYourArmorPatcher
                 throw new Exception("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
             }
 
-            string[] requiredFiles = { "armor_rules.json", "misc.json", "settings.json" };
+            string[] requiredFiles = { "armor_rules.json", "misc.json", "settings.json"};
             foreach (string file in requiredFiles)
             {
                 if (!File.Exists(file)) throw new Exception("Required file " + file + " does not exist! Make sure to copy all files over when installing the patcher, and don't run it from within an archive.");
@@ -192,6 +192,7 @@ namespace KnowYourArmorPatcher
             List<string> ignoredArmors = GetFromJson("ignored_armors", miscJson).ToList();
 
             float effectIntensity = (float)settingsJson["effect_intensity"]!;
+            bool patchArmorDescriptions = (bool)settingsJson["patch_armor_descriptions"]!;
 
             Dictionary<string, Keyword> armorKeywords = armorKeywordsTuple.Select(tuple =>
             {
@@ -307,26 +308,12 @@ namespace KnowYourArmorPatcher
                     armorCopy.Description = new TranslatedString(GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity));
                 }
 
-                //Console.WriteLine(armor.EditorID + " is going to receive " + keywords.Count + " keywords.");
-
                 // Add keywords that are to be added to armor
                 foreach(string? keyword in armorKeywordsToAdd)
                 {
                     if (keyword != null) armorCopy.Keywords!.Add(armorKeywords[keyword]);
                 }
 
-                // DEBUG - remove later
-                if (armorCopy.Description != null)
-                {
-                    if (armorCopy.FormKey.ID == 0x012E49)
-                    {
-                        Console.WriteLine("ARMOR EDID: " + armorCopy.EditorID + " ARMOR DESC:" + armorCopy.Description.ToString());
-                    }
-                    else if (armorCopy.FormKey.ID == 0x403AB26)
-                    {
-                        Console.WriteLine("ARMOR EDID: " + armorCopy.EditorID + " ARMOR DESC:" + armorCopy.Description.ToString());
-                    }
-                }
                 state.PatchMod.Armors.Add(armorCopy);
             }
         }
