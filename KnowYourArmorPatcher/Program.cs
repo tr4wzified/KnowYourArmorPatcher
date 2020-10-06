@@ -195,12 +195,12 @@ namespace KnowYourArmorPatcher
             float effectIntensity = (float)settingsJson["effect_intensity"]!;
             bool patchArmorDescriptions = (bool)settingsJson["patch_armor_descriptions"]!;
 
-            Dictionary<string, Keyword> armorKeywords = armorKeywordsTuple
+            Dictionary<string, FormKey> armorKeywords = armorKeywordsTuple
                 .Select(tuple =>
                 {
                     var (key, id) = tuple;
                     state.LinkCache.TryLookup<IKeywordGetter>(KnowYourEnemy.MakeFormKey(id), out var keyword);
-                    if (keyword != null) return (key, keyword: keyword.DeepCopy());
+                    if (keyword != null) return (key, keyword: keyword.FormKey);
                     else throw new Exception("Failed to find perk with key: " + key + " and id " + id);
                 })
                 .Where(x => x.keyword != null)
@@ -211,7 +211,7 @@ namespace KnowYourArmorPatcher
                 throw new Exception($"Unable to find required perk: {perkForm}");
 
             // Returns all keywords from an armor that are found in armor rules json 
-            List<string> GetRecognizedKeywords(Armor armor)
+            List<string> GetRecognizedKeywords(IArmorGetter armor)
             {
                 List<string> foundEDIDs = new List<string>();
                 if (armor.Keywords == null) return foundEDIDs;
@@ -246,13 +246,12 @@ namespace KnowYourArmorPatcher
 
                 if (npc.Race.TryResolve(state.LinkCache, out var race) && race.EditorID != null && armorRaces.Contains(race.EditorID))
                 {
-                    var perk = perkLink.DeepCopy();
                     var npcCopy = state.PatchMod.Npcs.GetOrAddAsOverride(npc);
                     if (npcCopy.Perks == null) npcCopy.Perks = new ExtendedList<PerkPlacement>();
                     PerkPlacement p = new PerkPlacement
                     {
                         Rank = 1,
-                        Perk = perk
+                        Perk = perkLink.FormKey
                     };
                     npcCopy.Perks.Add(p);
                 }
@@ -263,7 +262,7 @@ namespace KnowYourArmorPatcher
 
             if (!effectIntensity.EqualsWithin(1))
             {
-                Perk perk = perkLink.DeepCopy();
+                var perk = state.PatchMod.Perks.GetOrAddAsOverride(perkLink);
                 foreach (var eff in perk.Effects)
                 {
                     if (!(eff is PerkEntryPointModifyValue epValue)) continue;
@@ -271,7 +270,6 @@ namespace KnowYourArmorPatcher
 
                     epValue.Value = AdjustEffectMagnitude(epValue.Value, effectIntensity);
                 }
-                state.PatchMod.Perks.GetOrAddAsOverride(perk);
             }
 
             // Part 3
@@ -282,11 +280,12 @@ namespace KnowYourArmorPatcher
                 if (armor.Keywords == null || !armor.Keywords.Contains(Skyrim.Keyword.ArmorCuirass)) continue;
                 if (!armor.TemplateArmor.IsNull) continue;
 
-                Armor armorCopy = armor.DeepCopy();
-                List<string> foundEDIDs = GetRecognizedKeywords(armorCopy);
+                List<string> foundEDIDs = GetRecognizedKeywords(armor);
                 if (armorRulesJson[armor.EditorID] == null && !foundEDIDs.Any()) continue;
 
                 List<string> armorKeywordsToAdd = new List<string>();
+
+                var armorCopy = state.PatchMod.Armors.GetOrAddAsOverride(armor);
 
                 foreach (string foundEDID in foundEDIDs)
                 {
@@ -321,8 +320,6 @@ namespace KnowYourArmorPatcher
                 {
                     armorCopy.Keywords!.Add(armorKeywords[keyword]);
                 }
-
-                state.PatchMod.Armors.Add(armorCopy);
             }
         }
     }
