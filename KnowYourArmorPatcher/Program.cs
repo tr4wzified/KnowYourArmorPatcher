@@ -10,6 +10,8 @@ using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Wabbajack.Common;
 using Newtonsoft.Json.Linq;
 using System.Text;
+using System.Reflection.Metadata.Ecma335;
+using System.Globalization;
 
 namespace KnowYourArmorPatcher
 {
@@ -59,7 +61,8 @@ namespace KnowYourArmorPatcher
 
         private static void QuickAppend(StringBuilder description, string name, float num)
         {
-            if (num != 1) description.Append(" " + name + " x" + Math.Round(num, 2) + ",");
+            // The en-US is to make the whole numbers and decimals split with a . instead of a ,
+            if (num != 1) description.Append(" " + name + " x" + Math.Round(num, 2).ToString(new CultureInfo("en-US")) + ",");
         }
         private static string GenerateDescription(SynthesisState<ISkyrimMod, ISkyrimModGetter> state, string recordEDID, JObject armorRulesJson, float effectIntensity)
         {
@@ -72,7 +75,7 @@ namespace KnowYourArmorPatcher
                 }
                 if (armorRulesJson[recordEDID]!["construction"] != null)
                 {
-                    if (description.Length != 0) description.Append(" ");
+                    if (description.Length != 0) description.Append("; ");
                     description.Append("Construction: " + armorRulesJson[recordEDID]!["construction"]);
                 }
                 if (description.Length != 0) description.Append(".");
@@ -102,7 +105,7 @@ namespace KnowYourArmorPatcher
                     if (keywords.Contains("leathery"))
                     {
                         arrows *= AdjustEffectMagnitude(1.25f, effectIntensity);
-                        fire *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        fire *= AdjustEffectMagnitude(0.75f, effectIntensity);
                         wind *= AdjustEffectMagnitude(1.25f, effectIntensity);
                         water *= AdjustEffectMagnitude(0.75f, effectIntensity);
                     }
@@ -111,6 +114,13 @@ namespace KnowYourArmorPatcher
                         blunt *= AdjustEffectMagnitude(1.25f, effectIntensity);
                         water *= AdjustEffectMagnitude(1.25f, effectIntensity);
                         earth *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                    }
+                    if (keywords.Contains("nonconductive"))
+                    {
+                        shock *= AdjustEffectMagnitude(0.25f, effectIntensity);
+                        fire *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        frost *= AdjustEffectMagnitude(1.25f, effectIntensity);
+                        water *= AdjustEffectMagnitude(0.75f, effectIntensity);
                     }
                     if (keywords.Contains("thick"))
                     {
@@ -152,6 +162,9 @@ namespace KnowYourArmorPatcher
                         QuickAppend(description, "Wind", wind);
                         QuickAppend(description, "Earth", earth);
                     }
+
+                    // Remove last char if ending with ,
+                    if (description[description.Length - 1] == ',') description[description.Length - 1] = '.';
                 }
             }
             return description.ToString();
@@ -194,14 +207,25 @@ namespace KnowYourArmorPatcher
                 throw new Exception("Unable to find required perk know_your_enemy.esp:0x0B6D0D");
 
             // Returns all keywords from an armor that are found in armor rules json 
-        List<string> ArmorKeywordIsInArmorRules(Armor armor)
+        List<string> GetRecognizedKeywords(Armor armor)
         {
             List<string> foundEDIDs = new List<string>();
             if (armor.Keywords == null) return foundEDIDs;
             foreach(var keyword in armor.Keywords)
             {
                 if (keyword.TryResolve<IKeywordGetter>(state.LinkCache, out var kw)) {
-                        if (kw.EditorID != null && armorRulesJson![kw.EditorID] != null) foundEDIDs.Add(kw.EditorID);
+                        if (kw.EditorID != null && armorRulesJson![kw.EditorID] != null)
+                        {
+                            // Make sure ArmorMaterialIron comes first - fixes weird edge case generating descriptions when ArmorMaterialIronBanded is also in there
+                            if (kw.EditorID == "ArmorMaterialIronBanded")
+                            {
+                                foundEDIDs.Insert(0, kw.EditorID);
+                            }
+                            else
+                            {
+                                foundEDIDs.Add(kw.EditorID);
+                            }
+                        }
                 }
             }
             return foundEDIDs;
@@ -249,15 +273,27 @@ namespace KnowYourArmorPatcher
             // Add the keywords to each armor
             foreach (var armor in state.LoadOrder.PriorityOrder.WinningOverrides<IArmorGetter>())
             {
-                if (armor.EditorID == null) continue;
-                if (ignoredArmors.Contains(armor.EditorID)) continue;
+                if (armor.EditorID == null || ignoredArmors.Contains(armor.EditorID)) continue;
                 if (armor.Keywords == null || !armor.Keywords.Contains(Skyrim.Keyword.ArmorCuirass)) continue;
                 if (!armor.TemplateArmor.IsNull) continue;
+
                 Armor armorCopy = armor.DeepCopy();
+                List<string> foundEDIDs = GetRecognizedKeywords(armorCopy);
+                if (armorRulesJson[armor.EditorID] == null && !foundEDIDs.Any()) continue;
+
                 List<string> armorKeywordsToAdd = new List<string>();
 
-                List<string> foundEDIDs = ArmorKeywordIsInArmorRules(armorCopy);
-                if (armorRulesJson[armor.EditorID] == null && !foundEDIDs.Any()) continue;
+                foreach (string foundEDID in foundEDIDs)
+                {
+                    // Get KYE keywords connected to recognized armor keyword
+                    foreach(string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!["keywords"]!).ToObject<string[]>()!)
+                    {
+                        if (!armorKeywordsToAdd.Contains(keywordToAdd))
+                            armorKeywordsToAdd.Add(keywordToAdd);
+                    }
+                    string desc = GenerateDescription(state, foundEDID, armorRulesJson, effectIntensity);
+                    if (!String.IsNullOrEmpty(desc)) armorCopy.Description = new TranslatedString(desc);
+                }
 
                 if (armorRulesJson[armor.EditorID] != null)
                 {
@@ -268,19 +304,7 @@ namespace KnowYourArmorPatcher
                         }
 
                     }
-                }
-                else
-                {
                     armorCopy.Description = new TranslatedString(GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity));
-                }
-
-                foreach (string foundEDID in foundEDIDs)
-                {
-                    foreach(string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!["keywords"]!).ToObject<string[]>()!)
-                    {
-                        if (!armorKeywordsToAdd.Contains(keywordToAdd))
-                            armorKeywordsToAdd.Add(keywordToAdd);
-                    }
                 }
 
                 //Console.WriteLine(armor.EditorID + " is going to receive " + keywords.Count + " keywords.");
