@@ -271,7 +271,7 @@ namespace KnowYourArmorPatcher
             }
 
             // Part 3
-            // Add the keywords to each armor
+            // Add the keywords to each armor (and optionally add descriptions)
             foreach (var armor in state.LoadOrder.PriorityOrder.WinningOverrides<IArmorGetter>())
             {
                 if (armor.EditorID == null || ignoredArmors.Contains(armor.EditorID)) continue;
@@ -292,8 +292,11 @@ namespace KnowYourArmorPatcher
                         if (!armorKeywordsToAdd.Contains(keywordToAdd))
                             armorKeywordsToAdd.Add(keywordToAdd);
                     }
-                    string desc = GenerateDescription(state, foundEDID, armorRulesJson, effectIntensity);
-                    if (!String.IsNullOrEmpty(desc)) armorCopy.Description = new TranslatedString(desc);
+                    if (patchArmorDescriptions)
+                    {
+                        string desc = GenerateDescription(state, foundEDID, armorRulesJson, effectIntensity);
+                        if (!String.IsNullOrEmpty(desc)) armorCopy.Description = new TranslatedString(desc);
+                    }
                 }
 
                 if (armorRulesJson[armor.EditorID] != null)
@@ -305,7 +308,7 @@ namespace KnowYourArmorPatcher
                         }
 
                     }
-                    armorCopy.Description = new TranslatedString(GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity));
+                    if (patchArmorDescriptions) armorCopy.Description = new TranslatedString(GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity));
                 }
 
                 // Add keywords that are to be added to armor
