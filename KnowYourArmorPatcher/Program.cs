@@ -16,6 +16,8 @@ namespace KnowYourArmorPatcher
 {
     public class Program
     {
+        static ModKey KnowYourEnemy = ModKey.FromNameAndExtension("know_your_enemy.esp");
+
         public static int Main(string[] args)
         {
             return SynthesisPipeline.Instance.Patch<ISkyrimMod, ISkyrimModGetter>(
@@ -171,7 +173,7 @@ namespace KnowYourArmorPatcher
 
         public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
         {
-            if (!state.LoadOrder.ContainsKey(ModKey.FromNameAndExtension("know_your_enemy.esp")))
+            if (!state.LoadOrder.ContainsKey(KnowYourEnemy))
             {
                 throw new Exception("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
             }
@@ -197,16 +199,16 @@ namespace KnowYourArmorPatcher
                 .Select(tuple =>
                 {
                     var (key, id) = tuple;
-                    state.LinkCache.TryLookup<IKeywordGetter>(new FormKey("know_your_enemy.esp", id), out var keyword);
+                    state.LinkCache.TryLookup<IKeywordGetter>(KnowYourEnemy.MakeFormKey(id), out var keyword);
                     if (keyword != null) return (key, keyword: keyword.DeepCopy());
                     else throw new Exception("Failed to find perk with key: " + key + " and id " + id);
                 })
                 .Where(x => x.keyword != null)
                 .ToDictionary(x => x.key, x => x.keyword!, StringComparer.OrdinalIgnoreCase);
 
-
-            if (!state.LinkCache.TryLookup<IPerkGetter>(new FormKey("know_your_enemy.esp", 0x0B6D0D), out var perkLink))
-                throw new Exception("Unable to find required perk know_your_enemy.esp:0x0B6D0D");
+            var perkForm = KnowYourEnemy.MakeFormKey(0x0B6D0D);
+            if (!state.LinkCache.TryLookup<IPerkGetter>(perkForm, out var perkLink))
+                throw new Exception($"Unable to find required perk: {perkForm}");
 
             // Returns all keywords from an armor that are found in armor rules json 
             List<string> GetRecognizedKeywords(Armor armor)
@@ -215,12 +217,12 @@ namespace KnowYourArmorPatcher
                 if (armor.Keywords == null) return foundEDIDs;
                 foreach (var keyword in armor.Keywords)
                 {
-                    if (keyword.TryResolve<IKeywordGetter>(state.LinkCache, out var kw))
+                    if (keyword.TryResolve(state.LinkCache, out var kw))
                     {
                         if (kw.EditorID != null && armorRulesJson![kw.EditorID] != null)
                         {
                             // Make sure ArmorMaterialIron comes first - fixes weird edge case generating descriptions when ArmorMaterialIronBanded is also in there
-                            if (kw.EditorID == "ArmorMaterialIronBanded")
+                            if (kw.FormKey == Skyrim.Keyword.ArmorMaterialIronBanded)
                             {
                                 foundEDIDs.Insert(0, kw.EditorID);
                             }
@@ -297,7 +299,7 @@ namespace KnowYourArmorPatcher
                     if (patchArmorDescriptions)
                     {
                         string desc = GenerateDescription(state, foundEDID, armorRulesJson, effectIntensity);
-                        if (!String.IsNullOrEmpty(desc)) armorCopy.Description = new TranslatedString(desc);
+                        if (!String.IsNullOrEmpty(desc)) armorCopy.Description = desc;
                     }
                 }
 
@@ -311,13 +313,13 @@ namespace KnowYourArmorPatcher
                         }
 
                     }
-                    if (patchArmorDescriptions) armorCopy.Description = new TranslatedString(GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity));
+                    if (patchArmorDescriptions) armorCopy.Description = GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity);
                 }
 
                 // Add keywords that are to be added to armor
-                foreach (string? keyword in armorKeywordsToAdd)
+                foreach (var keyword in armorKeywordsToAdd)
                 {
-                    if (keyword != null) armorCopy.Keywords!.Add(armorKeywords[keyword]);
+                    armorCopy.Keywords!.Add(armorKeywords[keyword]);
                 }
 
                 state.PatchMod.Armors.Add(armorCopy);
