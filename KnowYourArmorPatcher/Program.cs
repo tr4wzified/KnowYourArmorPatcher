@@ -47,17 +47,17 @@ namespace KnowYourArmorPatcher
             return jObject.ContainsKey(key) ? jObject[key]!.Select(x => (string?)x).Where(x => x != null).Select(x => x!).ToList() : new List<string>();
         }
 
-        private static readonly Tuple<string, uint>[] armorKeywordsTuple =
+        private static readonly (string Key, uint Id)[] armorKeywordsTuple =
         {
-            new Tuple<string, uint> ("full", 0x0B6D03),
-            new Tuple<string, uint> ("warm", 0x0B6D04),
-            new Tuple<string, uint> ("leathery", 0x0B6D05),
-            new Tuple<string, uint> ("brittle", 0x0B6D06),
-            new Tuple<string, uint> ("nonconductive", 0x0B6D07),
-            new Tuple<string, uint> ("thick", 0x0B6D08),
-            new Tuple<string, uint> ("metal", 0x0B6D09),
-            new Tuple<string, uint> ("layered", 0x0B6D0A),
-            new Tuple<string, uint> ("deep", 0x0B6D0B),
+            ("full", 0x0B6D03),
+            ("warm", 0x0B6D04),
+            ("leathery", 0x0B6D05),
+            ("brittle", 0x0B6D06),
+            ("nonconductive", 0x0B6D07),
+            ("thick", 0x0B6D08),
+            ("metal", 0x0B6D09),
+            ("layered", 0x0B6D0A),
+            ("deep", 0x0B6D0B),
         };
 
         private static void QuickAppend(StringBuilder description, string name, float num)
@@ -196,20 +196,18 @@ namespace KnowYourArmorPatcher
             bool patchArmorDescriptions = (bool)settingsJson["patch_armor_descriptions"]!;
 
             Dictionary<string, FormKey> armorKeywords = armorKeywordsTuple
-                .Select(tuple =>
+                .Select(t =>
                 {
-                    var (key, id) = tuple;
-                    if (state.LinkCache.TryLookup<IKeywordGetter>(KnowYourEnemy.MakeFormKey(id), out var keyword))
+                    if (state.LinkCache.TryLookup<IKeywordGetter>(KnowYourEnemy.MakeFormKey(t.Id), out var keyword))
                     {
-                        return (key, keyword: keyword.FormKey);
+                        return (t.Key, Keyword: keyword.FormKey);
                     }
                     else
                     {
-                        throw new Exception("Failed to find perk with key: " + key + " and id " + id);
+                        throw new Exception($"Failed to find perk with key: {t.Key} and id {t.Id}");
                     }
                 })
-                .Where(x => x.keyword != null)
-                .ToDictionary(x => x.key, x => x.keyword!, StringComparer.OrdinalIgnoreCase);
+                .ToDictionary(x => x.Key, x => x.Keyword, StringComparer.OrdinalIgnoreCase);
 
             var perkForm = KnowYourEnemy.MakeFormKey(0x0B6D0D);
             if (!state.LinkCache.TryLookup<IPerkGetter>(perkForm, out var perkLink))
