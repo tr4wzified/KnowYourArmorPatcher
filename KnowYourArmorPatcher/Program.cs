@@ -199,9 +199,14 @@ namespace KnowYourArmorPatcher
                 .Select(tuple =>
                 {
                     var (key, id) = tuple;
-                    state.LinkCache.TryLookup<IKeywordGetter>(KnowYourEnemy.MakeFormKey(id), out var keyword);
-                    if (keyword != null) return (key, keyword: keyword.FormKey);
-                    else throw new Exception("Failed to find perk with key: " + key + " and id " + id);
+                    if (state.LinkCache.TryLookup<IKeywordGetter>(KnowYourEnemy.MakeFormKey(id), out var keyword))
+                    {
+                        return (key, keyword: keyword.FormKey);
+                    }
+                    else
+                    {
+                        throw new Exception("Failed to find perk with key: " + key + " and id " + id);
+                    }
                 })
                 .Where(x => x.keyword != null)
                 .ToDictionary(x => x.key, x => x.keyword!, StringComparer.OrdinalIgnoreCase);
