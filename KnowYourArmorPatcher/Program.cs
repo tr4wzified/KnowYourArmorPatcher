@@ -192,13 +192,11 @@ namespace KnowYourArmorPatcher
             if (!state.LoadOrder.ContainsKey(shadowSpellPackage) && state.LoadOrder.ContainsKey(kyeLightAndShadow))
                 Console.WriteLine("WARNING: Know Your Enemy Light and Shadow detected, but Shadow Spells Package was not found!");
 
-
-
-
-            string[] requiredFiles = { "armor_rules.json", "misc.json", "settings.json"};
+            string[] requiredFiles = { "armor_rules.json", "misc.json", "settings.json" };
             foreach (string file in requiredFiles)
             {
-                if (!File.Exists(file)) throw new Exception("Required file " + file + " does not exist! Make sure to copy all files over when installing the patcher, and don't run it from within an archive.");
+                if (!File.Exists(file))
+                    throw new Exception("Required file " + file + " does not exist! Make sure to copy all files over when installing the patcher, and don't run it from within an archive.");
             }
 
             var armorRulesJson = JObject.Parse(File.ReadAllText("armor_rules.json"));
