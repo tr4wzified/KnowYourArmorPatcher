@@ -10,17 +10,18 @@ using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Wabbajack.Common;
 using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Reflection.Metadata.Ecma335;
 using System.Globalization;
 
 namespace KnowYourArmorPatcher
 {
     public class Program
     {
+        static ModKey KnowYourEnemy = ModKey.FromNameAndExtension("know_your_enemy.esp");
         static ModKey elementalDestruction = ModKey.FromNameAndExtension("Elemental Destruction.esp");
         static ModKey knowYourElements = ModKey.FromNameAndExtension("Know Your Elements.esp");
         static ModKey shadowSpellPackage = ModKey.FromNameAndExtension("ShadowSpellPackage.esp");
         static ModKey kyeLightAndShadow = ModKey.FromNameAndExtension("KYE Light and Shadow.esp");
+
         public static int Main(string[] args)
         {
             return SynthesisPipeline.Instance.Patch<ISkyrimMod, ISkyrimModGetter>(
@@ -47,20 +48,20 @@ namespace KnowYourArmorPatcher
 
         private static IEnumerable<string> GetFromJson(string key, JObject jObject)
         {
-            return jObject.ContainsKey(key) ? jObject[key]!.Select(x => (string?) x).Where(x => x != null).Select(x => x!).ToList() : new List<string>();
+            return jObject.ContainsKey(key) ? jObject[key]!.Select(x => (string?)x).Where(x => x != null).Select(x => x!).ToList() : new List<string>();
         }
 
-        private static readonly Tuple<string, uint>[] armorKeywordsTuple =
+        private static readonly (string Key, uint Id)[] armorKeywordsTuple =
         {
-            new Tuple<string, uint> ("full", 0x0B6D03),
-            new Tuple<string, uint> ("warm", 0x0B6D04),
-            new Tuple<string, uint> ("leathery", 0x0B6D05),
-            new Tuple<string, uint> ("brittle", 0x0B6D06),
-            new Tuple<string, uint> ("nonconductive", 0x0B6D07),
-            new Tuple<string, uint> ("thick", 0x0B6D08),
-            new Tuple<string, uint> ("metal", 0x0B6D09),
-            new Tuple<string, uint> ("layered", 0x0B6D0A),
-            new Tuple<string, uint> ("deep", 0x0B6D0B),
+            ("full", 0x0B6D03),
+            ("warm", 0x0B6D04),
+            ("leathery", 0x0B6D05),
+            ("brittle", 0x0B6D06),
+            ("nonconductive", 0x0B6D07),
+            ("thick", 0x0B6D08),
+            ("metal", 0x0B6D09),
+            ("layered", 0x0B6D0A),
+            ("deep", 0x0B6D0B),
         };
 
         private static void QuickAppend(StringBuilder description, string name, float num)
@@ -176,10 +177,8 @@ namespace KnowYourArmorPatcher
 
         public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
         {
-            if (!state.LoadOrder.ContainsKey(ModKey.FromNameAndExtension("know_your_enemy.esp")))
-            {
+            if (!state.LoadOrder.ContainsKey(KnowYourEnemy))
                 throw new Exception("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
-            }
 
             if (state.LoadOrder.ContainsKey(elementalDestruction) && !state.LoadOrder.ContainsKey(knowYourElements))
                 Console.WriteLine("WARNING: Elemental Destruction Magic detected. For full compatibility with Know Your Enemy please install Know Your Elements!");
@@ -213,31 +212,37 @@ namespace KnowYourArmorPatcher
             float effectIntensity = (float)settingsJson["effect_intensity"]!;
             bool patchArmorDescriptions = (bool)settingsJson["patch_armor_descriptions"]!;
 
-            Dictionary<string, Keyword> armorKeywords = armorKeywordsTuple.Select(tuple =>
-            {
-                var (key, id) = tuple;
-                state.LinkCache.TryLookup<IKeywordGetter>(new FormKey("know_your_enemy.esp", id), out var keyword);
-                if (keyword != null) return (key, keyword: keyword.DeepCopy());
-                else throw new Exception("Failed to find perk with key: " + key + " and id " + id);
-            }).Where(x => x.keyword != null)
-        .ToDictionary(x => x.key, x => x.keyword!, StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, FormKey> armorKeywords = armorKeywordsTuple
+                .Select(t =>
+                {
+                    if (state.LinkCache.TryLookup<IKeywordGetter>(KnowYourEnemy.MakeFormKey(t.Id), out var keyword))
+                    {
+                        return (t.Key, Keyword: keyword.FormKey);
+                    }
+                    else
+                    {
+                        throw new Exception($"Failed to find perk with key: {t.Key} and id {t.Id}");
+                    }
+                })
+                .ToDictionary(x => x.Key, x => x.Keyword, StringComparer.OrdinalIgnoreCase);
 
-
-            if (!state.LinkCache.TryLookup<IPerkGetter>(new FormKey("know_your_enemy.esp", 0x0B6D0D), out var perkLink))
-                throw new Exception("Unable to find required perk know_your_enemy.esp:0x0B6D0D");
+            var perkForm = KnowYourEnemy.MakeFormKey(0x0B6D0D);
+            if (!state.LinkCache.TryLookup<IPerkGetter>(perkForm, out var perkLink))
+                throw new Exception($"Unable to find required perk: {perkForm}");
 
             // Returns all keywords from an armor that are found in armor rules json 
-        List<string> GetRecognizedKeywords(Armor armor)
-        {
-            List<string> foundEDIDs = new List<string>();
-            if (armor.Keywords == null) return foundEDIDs;
-            foreach(var keyword in armor.Keywords)
+            List<string> GetRecognizedKeywords(IArmorGetter armor)
             {
-                if (keyword.TryResolve<IKeywordGetter>(state.LinkCache, out var kw)) {
+                List<string> foundEDIDs = new List<string>();
+                if (armor.Keywords == null) return foundEDIDs;
+                foreach (var keyword in armor.Keywords)
+                {
+                    if (keyword.TryResolve(state.LinkCache, out var kw))
+                    {
                         if (kw.EditorID != null && armorRulesJson![kw.EditorID] != null)
                         {
                             // Make sure ArmorMaterialIron comes first - fixes weird edge case generating descriptions when ArmorMaterialIronBanded is also in there
-                            if (kw.EditorID == "ArmorMaterialIronBanded")
+                            if (kw.FormKey == Skyrim.Keyword.ArmorMaterialIronBanded)
                             {
                                 foundEDIDs.Insert(0, kw.EditorID);
                             }
@@ -246,10 +251,10 @@ namespace KnowYourArmorPatcher
                                 foundEDIDs.Add(kw.EditorID);
                             }
                         }
+                    }
                 }
+                return foundEDIDs;
             }
-            return foundEDIDs;
-        }
 
             // Part 1
             // Add the armor perk to all relevant NPCs
@@ -261,13 +266,12 @@ namespace KnowYourArmorPatcher
 
                 if (npc.Race.TryResolve(state.LinkCache, out var race) && race.EditorID != null && armorRaces.Contains(race.EditorID))
                 {
-                    var perk = perkLink.DeepCopy();
                     var npcCopy = state.PatchMod.Npcs.GetOrAddAsOverride(npc);
                     if (npcCopy.Perks == null) npcCopy.Perks = new ExtendedList<PerkPlacement>();
                     PerkPlacement p = new PerkPlacement
                     {
                         Rank = 1,
-                        Perk = perk
+                        Perk = perkLink.FormKey
                     };
                     npcCopy.Perks.Add(p);
                 }
@@ -278,7 +282,7 @@ namespace KnowYourArmorPatcher
 
             if (!effectIntensity.EqualsWithin(1))
             {
-                Perk perk = perkLink.DeepCopy();
+                var perk = state.PatchMod.Perks.GetOrAddAsOverride(perkLink);
                 foreach (var eff in perk.Effects)
                 {
                     if (!(eff is PerkEntryPointModifyValue epValue)) continue;
@@ -286,7 +290,6 @@ namespace KnowYourArmorPatcher
 
                     epValue.Value = AdjustEffectMagnitude(epValue.Value, effectIntensity);
                 }
-                state.PatchMod.Perks.GetOrAddAsOverride(perk);
             }
 
             // Part 3
@@ -297,16 +300,17 @@ namespace KnowYourArmorPatcher
                 if (armor.Keywords == null || !armor.Keywords.Contains(Skyrim.Keyword.ArmorCuirass)) continue;
                 if (!armor.TemplateArmor.IsNull) continue;
 
-                Armor armorCopy = armor.DeepCopy();
-                List<string> foundEDIDs = GetRecognizedKeywords(armorCopy);
+                List<string> foundEDIDs = GetRecognizedKeywords(armor);
                 if (armorRulesJson[armor.EditorID] == null && !foundEDIDs.Any()) continue;
 
                 List<string> armorKeywordsToAdd = new List<string>();
 
+                var armorCopy = state.PatchMod.Armors.GetOrAddAsOverride(armor);
+
                 foreach (string foundEDID in foundEDIDs)
                 {
                     // Get KYE keywords connected to recognized armor keyword
-                    foreach(string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!["keywords"]!).ToObject<string[]>()!)
+                    foreach (string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!["keywords"]!).ToObject<string[]>()!)
                     {
                         if (!armorKeywordsToAdd.Contains(keywordToAdd))
                             armorKeywordsToAdd.Add(keywordToAdd);
@@ -314,7 +318,7 @@ namespace KnowYourArmorPatcher
                     if (patchArmorDescriptions)
                     {
                         string desc = GenerateDescription(state, foundEDID, armorRulesJson, effectIntensity);
-                        if (!String.IsNullOrEmpty(desc)) armorCopy.Description = new TranslatedString(desc);
+                        if (!String.IsNullOrEmpty(desc)) armorCopy.Description = desc;
                     }
                 }
 
@@ -322,21 +326,20 @@ namespace KnowYourArmorPatcher
                 {
                     foreach (string? keywordToAdd in ((JArray)armorRulesJson[armor.EditorID]!["keywords"]!).ToObject<string[]>()!)
                     {
-                        if (keywordToAdd != null && !armorKeywordsToAdd.Contains(keywordToAdd)) {
+                        if (keywordToAdd != null && !armorKeywordsToAdd.Contains(keywordToAdd))
+                        {
                             armorKeywordsToAdd.Add(keywordToAdd);
                         }
 
                     }
-                    if (patchArmorDescriptions) armorCopy.Description = new TranslatedString(GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity));
+                    if (patchArmorDescriptions) armorCopy.Description = GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity);
                 }
 
                 // Add keywords that are to be added to armor
-                foreach(string? keyword in armorKeywordsToAdd)
+                foreach (var keyword in armorKeywordsToAdd)
                 {
-                    if (keyword != null) armorCopy.Keywords!.Add(armorKeywords[keyword]);
+                    armorCopy.Keywords!.Add(armorKeywords[keyword]);
                 }
-
-                state.PatchMod.Armors.Add(armorCopy);
             }
         }
     }
