@@ -171,11 +171,30 @@ namespace KnowYourArmorPatcher
         }
 
         public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
-        { 
+        {
+            ModKey elementalDestruction = ModKey.FromNameAndExtension("Elemental Destruction.esp");
+            ModKey knowYourElements = ModKey.FromNameAndExtension("Know Your Elements.esp");
+            ModKey shadowSpellPackage = ModKey.FromNameAndExtension("ShadowSpellPackage.esp");
+            ModKey kyeLightAndShadow = ModKey.FromNameAndExtension("KYE Light and Shadow.esp");
             if (!state.LoadOrder.ContainsKey(ModKey.FromNameAndExtension("know_your_enemy.esp")))
             {
                 throw new Exception("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
             }
+
+            if (state.LoadOrder.ContainsKey(elementalDestruction) && !state.LoadOrder.ContainsKey(knowYourElements))
+                Console.WriteLine("WARNING: Elemental Destruction Magic detected. For full compatibility with Know Your Enemy please install Know Your Elements!");
+
+            if (!state.LoadOrder.ContainsKey(elementalDestruction) && state.LoadOrder.ContainsKey(knowYourElements))
+                Console.WriteLine("WARNING: Know Your Elements detected, but Elemental Destruction Magic was not found!");
+
+            if (state.LoadOrder.ContainsKey(shadowSpellPackage) && !state.LoadOrder.ContainsKey(kyeLightAndShadow))
+                Console.WriteLine("WARNING: Shadow Spells Package detected. For full compatibility with Know Your Enemy please install Know Your Enemy Light and Shadow!");
+
+            if (!state.LoadOrder.ContainsKey(shadowSpellPackage) && state.LoadOrder.ContainsKey(kyeLightAndShadow))
+                Console.WriteLine("WARNING: Know Your Enemy Light and Shadow detected, but Shadow Spells Package was not found!");
+
+
+
 
             string[] requiredFiles = { "armor_rules.json", "misc.json", "settings.json"};
             foreach (string file in requiredFiles)
