@@ -17,6 +17,10 @@ namespace KnowYourArmorPatcher
 {
     public class Program
     {
+        static ModKey elementalDestruction = ModKey.FromNameAndExtension("Elemental Destruction.esp");
+        static ModKey knowYourElements = ModKey.FromNameAndExtension("Know Your Elements.esp");
+        static ModKey shadowSpellPackage = ModKey.FromNameAndExtension("ShadowSpellPackage.esp");
+        static ModKey kyeLightAndShadow = ModKey.FromNameAndExtension("KYE Light and Shadow.esp");
         public static int Main(string[] args)
         {
             return SynthesisPipeline.Instance.Patch<ISkyrimMod, ISkyrimModGetter>(
@@ -172,10 +176,6 @@ namespace KnowYourArmorPatcher
 
         public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
         {
-            ModKey elementalDestruction = ModKey.FromNameAndExtension("Elemental Destruction.esp");
-            ModKey knowYourElements = ModKey.FromNameAndExtension("Know Your Elements.esp");
-            ModKey shadowSpellPackage = ModKey.FromNameAndExtension("ShadowSpellPackage.esp");
-            ModKey kyeLightAndShadow = ModKey.FromNameAndExtension("KYE Light and Shadow.esp");
             if (!state.LoadOrder.ContainsKey(ModKey.FromNameAndExtension("know_your_enemy.esp")))
             {
                 throw new Exception("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
