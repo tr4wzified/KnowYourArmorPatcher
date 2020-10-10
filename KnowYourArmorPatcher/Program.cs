@@ -277,7 +277,6 @@ namespace KnowYourArmorPatcher
 
             // Part 2
             // Adjust the magnitude of KYE's effects according to the effectIntensity settings
-
             if (!effectIntensity.EqualsWithin(1))
             {
                 var perk = state.PatchMod.Perks.GetOrAddAsOverride(perkLink);
