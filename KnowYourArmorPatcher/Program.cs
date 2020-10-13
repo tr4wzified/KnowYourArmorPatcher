@@ -32,7 +32,7 @@ namespace KnowYourArmorPatcher
                     ActionsForEmptyArgs = new RunDefaultPatcher
                     {
                         IdentifyingModKey = "know_your_armor_patcher.esp",
-                        TargetRelease = GameRelease.SkyrimSE
+                        TargetRelease = GameRelease.SkyrimSE,
                     }
                 });
         }
@@ -192,16 +192,14 @@ namespace KnowYourArmorPatcher
             if (!state.LoadOrder.ContainsKey(shadowSpellPackage) && state.LoadOrder.ContainsKey(kyeLightAndShadow))
                 Console.WriteLine("WARNING: Know Your Enemy Light and Shadow detected, but Shadow Spells Package was not found!");
 
-            string[] requiredFiles = { "armor_rules.json", "misc.json", "settings.json" };
-            foreach (string file in requiredFiles)
-            {
-                if (!File.Exists(file))
-                    throw new Exception("Required file " + file + " does not exist! Make sure to copy all files over when installing the patcher, and don't run it from within an archive.");
-            }
+            string[] requiredFiles = { @"./Data\armor_rules.json", @"./Data\misc.json", @"./Data\settings.json" };
+            string[] foundFiles = Directory.GetFiles(state.ExtraSettingsDataPath);
+            if (!requiredFiles.SequenceEqual(foundFiles))
+                throw new Exception("Missing required files! Make sure to copy all files over when installing the patcher, and don't run it from within an archive.");
 
-            var armorRulesJson = JObject.Parse(File.ReadAllText("armor_rules.json"));
-            var miscJson = JObject.Parse(File.ReadAllText("misc.json"));
-            var settingsJson = JObject.Parse(File.ReadAllText("settings.json"));
+            var armorRulesJson = JObject.Parse(File.ReadAllText(requiredFiles[0]));
+            var miscJson = JObject.Parse(File.ReadAllText(requiredFiles[1]));
+            var settingsJson = JObject.Parse(File.ReadAllText(requiredFiles[2]));
 
             // Converting to list because .Contains in Newtonsoft.JSON has weird behavior
             List<string> armorRaces = GetFromJson("armor_races", miscJson).ToList();

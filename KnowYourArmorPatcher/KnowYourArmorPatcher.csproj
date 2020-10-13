@@ -5,19 +5,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Mutagen.Bethesda" Version="0.18.1" />
+        <PackageReference Include="Mutagen.Bethesda" Version="0.18.3.1" />
         <PackageReference Include="Mutagen.Bethesda.FormKeys.SkyrimSE" Version="1.0.0" />
-        <PackageReference Include="Mutagen.Bethesda.Synthesis" Version="0.9.1" />
+        <PackageReference Include="Mutagen.Bethesda.Synthesis" Version="0.10.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="armor_rules.json">
+      <None Update="Data\armor_rules.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="misc.json">
+      <None Update="Data\misc.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="settings.json">
+      <None Update="Data\settings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
