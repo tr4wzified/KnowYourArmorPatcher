@@ -11,6 +11,7 @@ using Wabbajack.Common;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Globalization;
+using System.Resources;
 
 namespace KnowYourArmorPatcher
 {
@@ -192,7 +193,7 @@ namespace KnowYourArmorPatcher
             if (!state.LoadOrder.ContainsKey(shadowSpellPackage) && state.LoadOrder.ContainsKey(kyeLightAndShadow))
                 Console.WriteLine("WARNING: Know Your Enemy Light and Shadow detected, but Shadow Spells Package was not found!");
 
-            string[] requiredFiles = { @"./Data\armor_rules.json", @"./Data\misc.json", @"./Data\settings.json" };
+            string[] requiredFiles = { state.ExtraSettingsDataPath + @"\armor_rules.json", state.ExtraSettingsDataPath + @"\misc.json", state.ExtraSettingsDataPath + @"\settings.json" };
             string[] foundFiles = Directory.GetFiles(state.ExtraSettingsDataPath);
             if (!requiredFiles.SequenceEqual(foundFiles))
                 throw new Exception("Missing required files! Make sure to copy all files over when installing the patcher, and don't run it from within an archive.");
