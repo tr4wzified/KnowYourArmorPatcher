@@ -23,7 +23,14 @@
         "OrcRaceVampire",
         "ElderRaceVampire",
         "DraugrRace",
-        "FalmerRace"
+        "FalmerRace",
+	"zzDraugrFlameRace",
+        "zzDraugrFrostRace",
+        "zzDraugrRightEyeRace",
+        "zzDraugrDiseasedRace",
+        "zzDraugrShockRace",
+        "zzDraugrCSWarriorRace01",
+        "BriDODraugrRaceOlaf"
     ],
     "ignored_armors": [
     	"DBClothesRobes",
