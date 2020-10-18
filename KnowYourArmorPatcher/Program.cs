@@ -209,6 +209,11 @@ namespace KnowYourArmorPatcher
             float effectIntensity = (float)settingsJson["effect_intensity"]!;
             bool patchArmorDescriptions = (bool)settingsJson["patch_armor_descriptions"]!;
 
+            Console.WriteLine("*** DETECTED SETTINGS ***");
+            Console.WriteLine("patch_armor_descriptions: " + patchArmorDescriptions);
+            Console.WriteLine("effect_intensity: " + effectIntensity);
+            Console.WriteLine("*************************");
+
             Dictionary<string, FormKey> armorKeywords = armorKeywordsTuple
                 .Select(t =>
                 {
