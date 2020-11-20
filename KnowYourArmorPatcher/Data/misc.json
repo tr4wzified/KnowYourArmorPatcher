@@ -30,7 +30,15 @@
         "zzDraugrDiseasedRace",
         "zzDraugrShockRace",
         "zzDraugrCSWarriorRace01",
-        "BriDODraugrRaceOlaf"
+        "BriDODraugrRaceOlaf",
+        "zzzCORedWitchRace",
+	"zzzCHEbonyGiantRace",
+	"zzzCHScampRace",
+	"zzzCOStalkerRace",
+	"zzzCORedHagRace",
+	"zzzCOClawlerRace",
+        "zzzCOWitchWispRace",
+        "HeroShadeRaceRoH"        
     ],
     "ignored_armors": [
     	"DBClothesRobes",
