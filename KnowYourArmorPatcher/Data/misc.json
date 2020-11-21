@@ -24,6 +24,8 @@
         "ElderRaceVampire",
         "DraugrRace",
         "FalmerRace",
+	// Delete the races below if you'd like to disable third party mod patching
+	// VIGILANT
 	"zzDraugrFlameRace",
         "zzDraugrFrostRace",
         "zzDraugrRightEyeRace",
@@ -38,6 +40,7 @@
 	"zzzCORedHagRace",
 	"zzzCOClawlerRace",
         "zzzCOWitchWispRace",
+	// Relics of Hyrule
         "HeroShadeRaceRoH"        
     ],
     "ignored_armors": [
