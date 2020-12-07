@@ -217,7 +217,7 @@ namespace KnowYourArmorPatcher
             Dictionary<string, FormKey> armorKeywords = armorKeywordsTuple
                 .Select(t =>
                 {
-                    if (state.LinkCache.TryLookup<IKeywordGetter>(KnowYourEnemy.MakeFormKey(t.Id), out var keyword))
+                    if (state.LinkCache.TryResolve<IKeywordGetter>(KnowYourEnemy.MakeFormKey(t.Id), out var keyword))
                     {
                         return (t.Key, Keyword: keyword.FormKey);
                     }
@@ -229,7 +229,7 @@ namespace KnowYourArmorPatcher
                 .ToDictionary(x => x.Key, x => x.Keyword, StringComparer.OrdinalIgnoreCase);
 
             var perkForm = KnowYourEnemy.MakeFormKey(0x0B6D0D);
-            if (!state.LinkCache.TryLookup<IPerkGetter>(perkForm, out var perkLink))
+            if (!state.LinkCache.TryResolve<IPerkGetter>(perkForm, out var perkLink))
                 throw new Exception($"Unable to find required perk: {perkForm}");
 
             // Returns all keywords from an armor that are found in armor rules json 
