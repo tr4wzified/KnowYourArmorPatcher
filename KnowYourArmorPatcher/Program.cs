@@ -319,7 +319,17 @@ namespace KnowYourArmorPatcher
                     if (patchArmorDescriptions)
                     {
                         string desc = GenerateDescription(state, foundEDID, armorRulesJson, effectIntensity);
-                        if (!String.IsNullOrEmpty(desc)) armorCopy.Description = desc;
+                        if (!String.IsNullOrEmpty(desc))
+                        {
+                            if (armorCopy.Description?.String.IsNullOrEmpty() ?? true)
+                            {
+                                armorCopy.Description = desc;
+                            }
+                            else
+                            {
+                                armorCopy.Description = armorCopy.Description.String + ". " + desc;
+                            }
+                        }
                     }
                 }
 
@@ -333,7 +343,22 @@ namespace KnowYourArmorPatcher
                         }
 
                     }
-                    if (patchArmorDescriptions) armorCopy.Description = GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity);
+
+                    if (patchArmorDescriptions)
+                    {
+                        var desc = GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity);
+                        if (!String.IsNullOrEmpty(desc))
+                        {
+                            if (armorCopy.Description?.String.IsNullOrEmpty() ?? true)
+                            {
+                                armorCopy.Description = desc;
+                            }
+                            else
+                            {
+                                armorCopy.Description = armorCopy.Description.String + ". " + desc;
+                            }
+                        }
+                    }
                 }
 
                 // Add keywords that are to be added to armor
