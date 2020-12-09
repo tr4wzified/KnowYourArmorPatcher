@@ -307,7 +307,7 @@ namespace KnowYourArmorPatcher
                 List<string> armorKeywordsToAdd = new List<string>();
 
                 var armorCopy = state.PatchMod.Armors.GetOrAddAsOverride(armor);
-
+                var origDescription = armorCopy.Description;
                 foreach (string foundEDID in foundEDIDs)
                 {
                     // Get KYE keywords connected to recognized armor keyword
@@ -329,11 +329,11 @@ namespace KnowYourArmorPatcher
                             {
                                 if (armorCopy.Description?.String?.EndsWith(".") ?? false)
                                 {
-                                    armorCopy.Description = armorCopy.Description.String + " " + desc;
+                                    armorCopy.Description = origDescription?.String + " " + desc;
                                 }
                                 else
                                 {
-                                    armorCopy.Description = armorCopy.Description?.String + ". " + desc;
+                                    armorCopy.Description = origDescription?.String + ". " + desc;
                                 }
                             }
                         }
@@ -364,11 +364,11 @@ namespace KnowYourArmorPatcher
                             {
                                 if (armorCopy.Description?.String?.EndsWith(".") ?? false)
                                 {
-                                    armorCopy.Description = armorCopy.Description.String + " " + desc;
+                                    armorCopy.Description = origDescription?.String + " " + desc;
                                 }
                                 else
                                 {
-                                    armorCopy.Description = armorCopy.Description?.String + ". " + desc;
+                                    armorCopy.Description = origDescription?.String + ". " + desc;
                                 }
                             }
                         }
