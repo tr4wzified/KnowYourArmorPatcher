@@ -327,7 +327,14 @@ namespace KnowYourArmorPatcher
                             }
                             else
                             {
-                                armorCopy.Description = armorCopy.Description.String + ". " + desc;
+                                if (armorCopy.Description?.String?.EndsWith(".") ?? false)
+                                {
+                                    armorCopy.Description = armorCopy.Description.String + " " + desc;
+                                }
+                                else
+                                {
+                                    armorCopy.Description = armorCopy.Description?.String + ". " + desc;
+                                }
                             }
                         }
                     }
@@ -355,7 +362,14 @@ namespace KnowYourArmorPatcher
                             }
                             else
                             {
-                                armorCopy.Description = armorCopy.Description.String + ". " + desc;
+                                if (armorCopy.Description?.String?.EndsWith(".") ?? false)
+                                {
+                                    armorCopy.Description = armorCopy.Description.String + " " + desc;
+                                }
+                                else
+                                {
+                                    armorCopy.Description = armorCopy.Description?.String + ". " + desc;
+                                }
                             }
                         }
                     }
