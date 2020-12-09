@@ -307,7 +307,7 @@ namespace KnowYourArmorPatcher
                 List<string> armorKeywordsToAdd = new List<string>();
 
                 var armorCopy = state.PatchMod.Armors.GetOrAddAsOverride(armor);
-
+                var origDescription = armorCopy.Description;
                 foreach (string foundEDID in foundEDIDs)
                 {
                     // Get KYE keywords connected to recognized armor keyword
@@ -319,7 +319,24 @@ namespace KnowYourArmorPatcher
                     if (patchArmorDescriptions)
                     {
                         string desc = GenerateDescription(state, foundEDID, armorRulesJson, effectIntensity);
-                        if (!String.IsNullOrEmpty(desc)) armorCopy.Description = desc;
+                        if (!String.IsNullOrEmpty(desc))
+                        {
+                            if (armorCopy.Description?.String.IsNullOrEmpty() ?? true)
+                            {
+                                armorCopy.Description = desc;
+                            }
+                            else
+                            {
+                                if (armorCopy.Description?.String?.EndsWith(".") ?? false)
+                                {
+                                    armorCopy.Description = origDescription?.String + " " + desc;
+                                }
+                                else
+                                {
+                                    armorCopy.Description = origDescription?.String + ". " + desc;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -333,7 +350,29 @@ namespace KnowYourArmorPatcher
                         }
 
                     }
-                    if (patchArmorDescriptions) armorCopy.Description = GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity);
+
+                    if (patchArmorDescriptions)
+                    {
+                        var desc = GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity);
+                        if (!String.IsNullOrEmpty(desc))
+                        {
+                            if (armorCopy.Description?.String.IsNullOrEmpty() ?? true)
+                            {
+                                armorCopy.Description = desc;
+                            }
+                            else
+                            {
+                                if (armorCopy.Description?.String?.EndsWith(".") ?? false)
+                                {
+                                    armorCopy.Description = origDescription?.String + " " + desc;
+                                }
+                                else
+                                {
+                                    armorCopy.Description = origDescription?.String + ". " + desc;
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // Add keywords that are to be added to armor
