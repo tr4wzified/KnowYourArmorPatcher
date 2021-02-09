@@ -7,11 +7,10 @@ using Mutagen.Bethesda.Synthesis;
 using Mutagen.Bethesda.Skyrim;
 using Noggog;
 using Mutagen.Bethesda.FormKeys.SkyrimSE;
-using Wabbajack.Common;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Globalization;
-using System.Resources;
+using System.Threading.Tasks;
 
 namespace KnowYourArmorPatcher
 {
@@ -23,12 +22,11 @@ namespace KnowYourArmorPatcher
         static ModKey shadowSpellPackage = ModKey.FromNameAndExtension("ShadowSpellPackage.esp");
         static ModKey kyeLightAndShadow = ModKey.FromNameAndExtension("KYE Light and Shadow.esp");
 
-        public static int Main(string[] args)
+        public static Task<int> Main(string[] args)
         {
-            return SynthesisPipeline.Instance.Patch<ISkyrimMod, ISkyrimModGetter>(
-                args: args,
-                patcher: RunPatch,
-                new UserPreferences
+            return SynthesisPipeline.Instance
+                .AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
+                .Run(args, new RunPreferences()
                 {
                     ActionsForEmptyArgs = new RunDefaultPatcher
                     {
@@ -70,7 +68,7 @@ namespace KnowYourArmorPatcher
             // The en-US is to make the whole numbers and decimals split with a . instead of a ,
             if (num != 1) description.Append(" " + name + " x" + Math.Round(num, 2).ToString(new CultureInfo("en-US")) + ",");
         }
-        private static string GenerateDescription(SynthesisState<ISkyrimMod, ISkyrimModGetter> state, string recordEDID, JObject armorRulesJson, float effectIntensity)
+        private static string GenerateDescription(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, string recordEDID, JObject armorRulesJson, float effectIntensity)
         {
             StringBuilder description = new StringBuilder();
             if (armorRulesJson[recordEDID] != null)
@@ -176,7 +174,7 @@ namespace KnowYourArmorPatcher
             return description.ToString();
         }
 
-        public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
+        public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             if (!state.LoadOrder.ContainsKey(KnowYourEnemy))
                 throw new Exception("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
