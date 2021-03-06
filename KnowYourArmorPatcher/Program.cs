@@ -16,7 +16,6 @@ namespace KnowYourArmorPatcher
 {
     public class Program
     {
-        static ModKey KnowYourEnemy = ModKey.FromNameAndExtension("know_your_enemy.esp");
         static ModKey elementalDestruction = ModKey.FromNameAndExtension("Elemental Destruction.esp");
         static ModKey knowYourElements = ModKey.FromNameAndExtension("Know Your Elements.esp");
         static ModKey shadowSpellPackage = ModKey.FromNameAndExtension("ShadowSpellPackage.esp");
@@ -176,9 +175,6 @@ namespace KnowYourArmorPatcher
 
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
-            if (!state.LoadOrder.ContainsKey(KnowYourEnemy))
-                throw new Exception("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
-
             if (state.LoadOrder.ContainsKey(elementalDestruction) && !state.LoadOrder.ContainsKey(knowYourElements))
                 Console.WriteLine("WARNING: Elemental Destruction Magic detected. For full compatibility with Know Your Enemy please install Know Your Elements!");
 
