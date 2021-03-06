@@ -4,4 +4,7 @@
   "OneLineDescription": "Patches your mods to work with Know Your Armor.",
   "LongDescription": "",
   "PreferredAutoVersioning": "Default"
+  "RequiredMods": [
+    "know_your_enemy.esp"
+  ]
 }
