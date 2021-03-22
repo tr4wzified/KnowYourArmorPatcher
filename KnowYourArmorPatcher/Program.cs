@@ -16,24 +16,15 @@ namespace KnowYourArmorPatcher
 {
     public class Program
     {
-        static ModKey KnowYourEnemy = ModKey.FromNameAndExtension("know_your_enemy.esp");
         static ModKey elementalDestruction = ModKey.FromNameAndExtension("Elemental Destruction.esp");
-        static ModKey knowYourElements = ModKey.FromNameAndExtension("Know Your Elements.esp");
         static ModKey shadowSpellPackage = ModKey.FromNameAndExtension("ShadowSpellPackage.esp");
-        static ModKey kyeLightAndShadow = ModKey.FromNameAndExtension("KYE Light and Shadow.esp");
 
         public static Task<int> Main(string[] args)
         {
             return SynthesisPipeline.Instance
                 .AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
-                .Run(args, new RunPreferences()
-                {
-                    ActionsForEmptyArgs = new RunDefaultPatcher
-                    {
-                        IdentifyingModKey = "know_your_armor_patcher.esp",
-                        TargetRelease = GameRelease.SkyrimSE,
-                    }
-                });
+                .SetTypicalOpen(GameRelease.SkyrimSE, "know_your_armor_patcher.esp")
+                .Run(args);
         }
 
         private static float AdjustEffectMagnitude(float magnitude, float scale)
@@ -50,17 +41,17 @@ namespace KnowYourArmorPatcher
             return jObject.ContainsKey(key) ? jObject[key]!.Select(x => (string?)x).Where(x => x != null).Select(x => x!).ToList() : new List<string>();
         }
 
-        private static readonly (string Key, uint Id)[] armorKeywordsTuple =
+        private static readonly Dictionary<string, IFormLinkGetter<IKeywordGetter>> armorKeywords = new()
         {
-            ("full", 0x0B6D03),
-            ("warm", 0x0B6D04),
-            ("leathery", 0x0B6D05),
-            ("brittle", 0x0B6D06),
-            ("nonconductive", 0x0B6D07),
-            ("thick", 0x0B6D08),
-            ("metal", 0x0B6D09),
-            ("layered", 0x0B6D0A),
-            ("deep", 0x0B6D0B),
+            { "full", KnowYourEnemy.Keyword.kye_armor_full },
+            { "warm", KnowYourEnemy.Keyword.kye_armor_warm },
+            { "leathery", KnowYourEnemy.Keyword.kye_armor_leathery },
+            { "brittle", KnowYourEnemy.Keyword.kye_armor_brittle },
+            { "nonconductive", KnowYourEnemy.Keyword.kye_armor_nonconductive },
+            { "thick", KnowYourEnemy.Keyword.kye_armor_thick },
+            { "metal", KnowYourEnemy.Keyword.kye_armor_metal },
+            { "layered", KnowYourEnemy.Keyword.kye_armor_layered },
+            { "deep", KnowYourEnemy.Keyword.kye_armor_deep },
         };
 
         private static void QuickAppend(StringBuilder description, string name, float num)
@@ -176,19 +167,19 @@ namespace KnowYourArmorPatcher
 
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
-            if (!state.LoadOrder.ContainsKey(KnowYourEnemy))
+            if (!state.LoadOrder.ContainsKey(KnowYourEnemy.ModKey))
                 throw new Exception("ERROR: Know Your Enemy not detected in load order. You need to install KYE prior to running this patcher!");
 
-            if (state.LoadOrder.ContainsKey(elementalDestruction) && !state.LoadOrder.ContainsKey(knowYourElements))
+            if (state.LoadOrder.ContainsKey(elementalDestruction) && !state.LoadOrder.ContainsKey(KnowYourElements.ModKey))
                 Console.WriteLine("WARNING: Elemental Destruction Magic detected. For full compatibility with Know Your Enemy please install Know Your Elements!");
 
-            if (!state.LoadOrder.ContainsKey(elementalDestruction) && state.LoadOrder.ContainsKey(knowYourElements))
+            if (!state.LoadOrder.ContainsKey(elementalDestruction) && state.LoadOrder.ContainsKey(KnowYourElements.ModKey))
                 Console.WriteLine("WARNING: Know Your Elements detected, but Elemental Destruction Magic was not found!");
 
-            if (state.LoadOrder.ContainsKey(shadowSpellPackage) && !state.LoadOrder.ContainsKey(kyeLightAndShadow))
+            if (state.LoadOrder.ContainsKey(shadowSpellPackage) && !state.LoadOrder.ContainsKey(LightAndShadow.ModKey))
                 Console.WriteLine("WARNING: Shadow Spells Package detected. For full compatibility with Know Your Enemy please install Know Your Enemy Light and Shadow!");
 
-            if (!state.LoadOrder.ContainsKey(shadowSpellPackage) && state.LoadOrder.ContainsKey(kyeLightAndShadow))
+            if (!state.LoadOrder.ContainsKey(shadowSpellPackage) && state.LoadOrder.ContainsKey(LightAndShadow.ModKey))
                 Console.WriteLine("WARNING: Know Your Enemy Light and Shadow detected, but Shadow Spells Package was not found!");
 
             string[] requiredFiles = { state.ExtraSettingsDataPath + @"\armor_rules.json", state.ExtraSettingsDataPath + @"\misc.json", state.ExtraSettingsDataPath + @"\settings.json" };
@@ -212,23 +203,8 @@ namespace KnowYourArmorPatcher
             Console.WriteLine("effect_intensity: " + effectIntensity);
             Console.WriteLine("*************************");
 
-            Dictionary<string, FormKey> armorKeywords = armorKeywordsTuple
-                .Select(t =>
-                {
-                    if (state.LinkCache.TryResolve<IKeywordGetter>(KnowYourEnemy.MakeFormKey(t.Id), out var keyword))
-                    {
-                        return (t.Key, Keyword: keyword.FormKey);
-                    }
-                    else
-                    {
-                        throw new Exception($"Failed to find perk with key: {t.Key} and id {t.Id}");
-                    }
-                })
-                .ToDictionary(x => x.Key, x => x.Keyword, StringComparer.OrdinalIgnoreCase);
-
-            var perkForm = KnowYourEnemy.MakeFormKey(0x0B6D0D);
-            if (!state.LinkCache.TryResolve<IPerkGetter>(perkForm, out var perkLink))
-                throw new Exception($"Unable to find required perk: {perkForm}");
+            if (!KnowYourEnemy.Perk.kye_perk_armors2.TryResolve(state.LinkCache, out var perkLink))
+                throw new Exception($"Unable to find required perk: {KnowYourEnemy.Perk.kye_perk_armors2}");
 
             // Returns all keywords from an armor that are found in armor rules json 
             List<string> GetRecognizedKeywords(IArmorGetter armor)
@@ -242,7 +218,7 @@ namespace KnowYourArmorPatcher
                         if (kw.EditorID != null && armorRulesJson![kw.EditorID] != null)
                         {
                             // Make sure ArmorMaterialIron comes first - fixes weird edge case generating descriptions when ArmorMaterialIronBanded is also in there
-                            if (kw.FormKey == Skyrim.Keyword.ArmorMaterialIronBanded)
+                            if (kw.Equals(Skyrim.Keyword.ArmorMaterialIronBanded))
                             {
                                 foundEDIDs.Insert(0, kw.EditorID);
                             }
@@ -258,7 +234,7 @@ namespace KnowYourArmorPatcher
 
             // Part 1
             // Add the armor perk to all relevant NPCs
-            foreach (var npc in state.LoadOrder.PriorityOrder.WinningOverrides<INpcGetter>())
+            foreach (var npc in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
             {
                 if (npc.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.SpellList)) continue;
 
@@ -271,7 +247,7 @@ namespace KnowYourArmorPatcher
                     PerkPlacement p = new PerkPlacement
                     {
                         Rank = 1,
-                        Perk = perkLink.FormKey
+                        Perk = perkLink.AsLink()
                     };
                     npcCopy.Perks.Add(p);
                 }
@@ -293,7 +269,7 @@ namespace KnowYourArmorPatcher
 
             // Part 3
             // Add the keywords to each armor (and optionally add descriptions)
-            foreach (var armor in state.LoadOrder.PriorityOrder.WinningOverrides<IArmorGetter>())
+            foreach (var armor in state.LoadOrder.PriorityOrder.Armor().WinningOverrides())
             {
                 if (armor.EditorID == null || ignoredArmors.Contains(armor.EditorID)) continue;
                 if (armor.Keywords == null || !armor.Keywords.Contains(Skyrim.Keyword.ArmorCuirass)) continue;
