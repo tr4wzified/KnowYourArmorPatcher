@@ -9,12 +9,7 @@ namespace Mutagen.Bethesda.FormKeys.SkyrimSE
         public static class Spell
         {
             private static FormLink<ISpellGetter> Construct(uint id) => new FormLink<ISpellGetter>(ModKey.MakeFormKey(id));
-            public static FormLink<ISpellGetter> kye_ab_aquatic => Construct(0xaa37);
-            public static FormLink<ISpellGetter> kye_ab_furred => Construct(0xaa38);
-            public static FormLink<ISpellGetter> kye_ab_fat => Construct(0xaa3b);
-            public static FormLink<ISpellGetter> kye_ab_big => Construct(0xaa3d);
             public static FormLink<ISpellGetter> kye_ab_small => Construct(0xaa3f);
-            public static FormLink<ISpellGetter> kye_ab_dwarven_machine => Construct(0xaa41);
             public static FormLink<ISpellGetter> kye_ab_undead => Construct(0xaa43);
             public static FormLink<ISpellGetter> kye_ab_venomous => Construct(0xaa45);
             public static FormLink<ISpellGetter> kye_ab_ice_elemental => Construct(0xaa47);
@@ -31,6 +26,13 @@ namespace Mutagen.Bethesda.FormKeys.SkyrimSE
             public static FormLink<ISpellGetter> kye_ab_supernatural => Construct(0xaa5d);
             public static FormLink<ISpellGetter> kye_ab_ghostly => Construct(0x60b93);
             public static FormLink<ISpellGetter> kye_ab_rocky => Construct(0xa28d5);
+            public static FormLink<ISpellGetter> kye_armor_description_ab => Construct(0xd531e);
+            public static FormLink<ISpellGetter> kye_inspect_spell => Construct(0xd5315);
+            public static FormLink<ISpellGetter> kye_ab_dwarven_machine => Construct(0xaa41);
+            public static FormLink<ISpellGetter> kye_ab_aquatic => Construct(0xaa37);
+            public static FormLink<ISpellGetter> kye_ab_furred => Construct(0xaa38);
+            public static FormLink<ISpellGetter> kye_ab_fat => Construct(0xaa3b);
+            public static FormLink<ISpellGetter> kye_ab_big => Construct(0xaa3d);
         }
     }
 }

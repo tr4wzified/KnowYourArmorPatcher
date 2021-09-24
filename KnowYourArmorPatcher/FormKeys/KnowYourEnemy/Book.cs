@@ -9,16 +9,6 @@ namespace Mutagen.Bethesda.FormKeys.SkyrimSE
         public static class Book
         {
             private static FormLink<IBookGetter> Construct(uint id) => new FormLink<IBookGetter>(ModKey.MakeFormKey(id));
-            public static FormLink<IBookGetter> KYE_book_furred => Construct(0x6fe99);
-            public static FormLink<IBookGetter> KYE_book_fat => Construct(0x7a0a1);
-            public static FormLink<IBookGetter> KYE_book_big => Construct(0x7f1a6);
-            public static FormLink<IBookGetter> KYE_book_small => Construct(0x842ab);
-            public static FormLink<IBookGetter> KYE_book_armored => Construct(0x893b0);
-            public static FormLink<IBookGetter> KYE_book_dwarven_machine => Construct(0x8e4b4);
-            public static FormLink<IBookGetter> KYE_book_undead => Construct(0x935b9);
-            public static FormLink<IBookGetter> KYE_book_venomous => Construct(0x986be);
-            public static FormLink<IBookGetter> KYE_book_elemental => Construct(0x9d7c2);
-            public static FormLink<IBookGetter> KYE_book_plant => Construct(0xa79d9);
             public static FormLink<IBookGetter> KYE_book_vile => Construct(0xa79db);
             public static FormLink<IBookGetter> KYE_book_skeletal => Construct(0xa79dc);
             public static FormLink<IBookGetter> KYE_book_trollkin => Construct(0xa79dd);
@@ -31,6 +21,16 @@ namespace Mutagen.Bethesda.FormKeys.SkyrimSE
             public static FormLink<IBookGetter> KYE_book_supernatural => Construct(0xa79e4);
             public static FormLink<IBookGetter> KYE_book_rocky => Construct(0xa79e5);
             public static FormLink<IBookGetter> kye_know_your_armor => Construct(0xb6d02);
+            public static FormLink<IBookGetter> KYE_book_big => Construct(0x7f1a6);
+            public static FormLink<IBookGetter> KYE_book_small => Construct(0x842ab);
+            public static FormLink<IBookGetter> KYE_book_armored => Construct(0x893b0);
+            public static FormLink<IBookGetter> KYE_book_furred => Construct(0x6fe99);
+            public static FormLink<IBookGetter> KYE_book_fat => Construct(0x7a0a1);
+            public static FormLink<IBookGetter> KYE_book_dwarven_machine => Construct(0x8e4b4);
+            public static FormLink<IBookGetter> KYE_book_undead => Construct(0x935b9);
+            public static FormLink<IBookGetter> KYE_book_venomous => Construct(0x986be);
+            public static FormLink<IBookGetter> KYE_book_elemental => Construct(0x9d7c2);
+            public static FormLink<IBookGetter> KYE_book_plant => Construct(0xa79d9);
         }
     }
 }

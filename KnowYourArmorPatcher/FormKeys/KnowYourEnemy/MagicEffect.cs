@@ -9,9 +9,17 @@ namespace Mutagen.Bethesda.FormKeys.SkyrimSE
         public static class MagicEffect
         {
             private static FormLink<IMagicEffectGetter> Construct(uint id) => new FormLink<IMagicEffectGetter>(ModKey.MakeFormKey(id));
+            public static FormLink<IMagicEffectGetter> kye_fur_description => Construct(0xd5316);
             public static FormLink<IMagicEffectGetter> kye_mgef_weakness_poison => Construct(0xaa1b);
             public static FormLink<IMagicEffectGetter> kye_mgef_weakness_disease => Construct(0xaa1c);
             public static FormLink<IMagicEffectGetter> kye_mgef_dummy => Construct(0x6ad97);
+            public static FormLink<IMagicEffectGetter> kye_leather_description => Construct(0xd5318);
+            public static FormLink<IMagicEffectGetter> kye_inspect_mgef => Construct(0xd5314);
+            public static FormLink<IMagicEffectGetter> kye_metal_description => Construct(0xd5319);
+            public static FormLink<IMagicEffectGetter> kye_nonconductive_description => Construct(0xd531a);
+            public static FormLink<IMagicEffectGetter> kye_thick_description => Construct(0xd531b);
+            public static FormLink<IMagicEffectGetter> kye_layered_description => Construct(0xd531c);
+            public static FormLink<IMagicEffectGetter> kye_deep_description => Construct(0xd531d);
         }
     }
 }
