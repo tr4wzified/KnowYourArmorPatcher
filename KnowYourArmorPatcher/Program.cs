@@ -44,10 +44,10 @@ namespace KnowYourArmorPatcher
 
         private static readonly Dictionary<string, IFormLinkGetter<IKeywordGetter>> armorKeywords = new()
         {
-            { "full", KnowYourEnemy.Keyword.kye_armor_full },
+            //{ "full", KnowYourEnemy.Keyword.kye_armor_full },
             { "warm", KnowYourEnemy.Keyword.kye_armor_warm },
             { "leathery", KnowYourEnemy.Keyword.kye_armor_leathery },
-            { "brittle", KnowYourEnemy.Keyword.kye_armor_brittle },
+            //{ "brittle", KnowYourEnemy.Keyword.kye_armor_brittle },
             { "nonconductive", KnowYourEnemy.Keyword.kye_armor_nonconductive },
             { "thick", KnowYourEnemy.Keyword.kye_armor_thick },
             { "metal", KnowYourEnemy.Keyword.kye_armor_metal },
@@ -60,7 +60,7 @@ namespace KnowYourArmorPatcher
             // The en-US is to make the whole numbers and decimals split with a . instead of a ,
             if (num != 1) description.Append(" " + name + " x" + Math.Round(num, 2).ToString(new CultureInfo("en-US")) + ",");
         }
-        private static string GenerateDescription(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, string recordEDID, JObject armorRulesJson, float effectIntensity)
+        /*private static string GenerateDescription(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, string recordEDID, JObject armorRulesJson, float effectIntensity)
         {
             StringBuilder description = new StringBuilder();
             if (armorRulesJson[recordEDID] != null)
@@ -89,7 +89,7 @@ namespace KnowYourArmorPatcher
                         water = 1,
                         wind = 1;
 
-                    string[] keywords = ((JArray)(armorRulesJson[recordEDID]!["keywords"]!)).ToObject<string[]>()!;
+                    string[] keywords = ((JArray)(armorRulesJson[recordEDID]!)).ToObject<string[]>()!;
                     if (keywords.Contains("warm"))
                     {
                         arrows *= AdjustEffectMagnitude(1.25f, effectIntensity);
@@ -164,7 +164,7 @@ namespace KnowYourArmorPatcher
                 }
             }
             return description.ToString();
-        }
+        }*/
 
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
@@ -197,10 +197,10 @@ namespace KnowYourArmorPatcher
             List<string> ignoredArmors = GetFromJson("ignored_armors", miscJson).ToList();
 
             float effectIntensity = _settings.Value.EffectIntensity;
-            bool patchArmorDescriptions = _settings.Value.PatchArmorDescriptions;
+            //bool patchArmorDescriptions = _settings.Value.PatchArmorDescriptions;
 
             Console.WriteLine("*** DETECTED SETTINGS ***");
-            Console.WriteLine("patch_armor_descriptions: " + patchArmorDescriptions);
+            //Console.WriteLine("patch_armor_descriptions: " + patchArmorDescriptions);
             Console.WriteLine("effect_intensity: " + effectIntensity);
             Console.WriteLine("*************************");
 
@@ -262,7 +262,7 @@ namespace KnowYourArmorPatcher
                 foreach (var eff in perk.Effects)
                 {
                     if (!(eff is PerkEntryPointModifyValue epValue)) continue;
-                    if (epValue.EntryPoint == APerkEntryPointEffect.EntryType.ModIncomingDamage || epValue.EntryPoint == APerkEntryPointEffect.EntryType.ModIncomingSpellMagnitude)
+                    if (epValue.EntryPoint is APerkEntryPointEffect.EntryType.ModIncomingDamage or APerkEntryPointEffect.EntryType.ModIncomingSpellMagnitude)
                         epValue.Value = AdjustEffectMagnitude(epValue.Value, effectIntensity);
                     else continue;
                 }
@@ -286,12 +286,12 @@ namespace KnowYourArmorPatcher
                 foreach (string foundEDID in foundEDIDs)
                 {
                     // Get KYE keywords connected to recognized armor keyword
-                    foreach (string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!["keywords"]!).ToObject<string[]>()!)
+                    foreach (string keywordToAdd in ((JArray)armorRulesJson[foundEDID]!).ToObject<string[]>()!)
                     {
                         if (!armorKeywordsToAdd.Contains(keywordToAdd))
                             armorKeywordsToAdd.Add(keywordToAdd);
                     }
-                    if (patchArmorDescriptions)
+                    /*if (patchArmorDescriptions)
                     {
                         string desc = GenerateDescription(state, foundEDID, armorRulesJson, effectIntensity);
                         if (!String.IsNullOrEmpty(desc))
@@ -312,12 +312,12 @@ namespace KnowYourArmorPatcher
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
 
                 if (armorRulesJson[armor.EditorID] != null)
                 {
-                    foreach (string? keywordToAdd in ((JArray)armorRulesJson[armor.EditorID]!["keywords"]!).ToObject<string[]>()!)
+                    foreach (string? keywordToAdd in ((JArray)armorRulesJson[armor.EditorID]!).ToObject<string[]>()!)
                     {
                         if (keywordToAdd != null && !armorKeywordsToAdd.Contains(keywordToAdd))
                         {
@@ -326,7 +326,7 @@ namespace KnowYourArmorPatcher
 
                     }
 
-                    if (patchArmorDescriptions)
+                    /*if (patchArmorDescriptions)
                     {
                         var desc = GenerateDescription(state, armor.EditorID, armorRulesJson, effectIntensity);
                         if (!String.IsNullOrEmpty(desc))
@@ -347,7 +347,7 @@ namespace KnowYourArmorPatcher
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
 
                 // Add keywords that are to be added to armor
