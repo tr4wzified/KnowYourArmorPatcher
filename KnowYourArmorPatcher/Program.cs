@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Globalization;
 using System.Threading.Tasks;
+using Mutagen.Bethesda.Plugins;
 
 namespace KnowYourArmorPatcher
 {
@@ -263,7 +264,10 @@ namespace KnowYourArmorPatcher
                 {
                     if (!(eff is PerkEntryPointModifyValue epValue)) continue;
                     if (epValue.EntryPoint is APerkEntryPointEffect.EntryType.ModIncomingDamage or APerkEntryPointEffect.EntryType.ModIncomingSpellMagnitude)
-                        epValue.Value = AdjustEffectMagnitude(epValue.Value, effectIntensity);
+                    {
+                        if (epValue.Value != null)
+                            epValue.Value = AdjustEffectMagnitude(epValue.Value.Value, effectIntensity);
+                    }
                     else continue;
                 }
             }

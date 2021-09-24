@@ -1,3 +1,5 @@
+using Mutagen.Bethesda.Plugins;
+
 namespace Mutagen.Bethesda.FormKeys.SkyrimSE
 {
     public static partial class LightAndShadow
