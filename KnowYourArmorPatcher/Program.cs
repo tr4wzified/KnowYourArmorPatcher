@@ -264,11 +264,7 @@ namespace KnowYourArmorPatcher
                 {
                     if (!(eff is PerkEntryPointModifyValue epValue)) continue;
                     if (epValue.EntryPoint is APerkEntryPointEffect.EntryType.ModIncomingDamage or APerkEntryPointEffect.EntryType.ModIncomingSpellMagnitude)
-                    {
-                        if (epValue.Value != null)
-                            epValue.Value = AdjustEffectMagnitude(epValue.Value.Value, effectIntensity);
-                    }
-                    else continue;
+                        epValue.Value = AdjustEffectMagnitude(epValue.Value ?? 0.0f, effectIntensity);
                 }
             }
 
