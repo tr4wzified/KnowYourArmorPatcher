@@ -262,8 +262,9 @@ namespace KnowYourArmorPatcher
                 var perk = state.PatchMod.Perks.GetOrAddAsOverride(perkLink);
                 foreach (var eff in perk.Effects)
                 {
-                    if (!(eff is PerkEntryPointModifyValue epValue)) continue;
-                    if (epValue.EntryPoint is APerkEntryPointEffect.EntryType.ModIncomingDamage or APerkEntryPointEffect.EntryType.ModIncomingSpellMagnitude)
+
+                    if (eff is not PerkEntryPointModifyValue epValue) continue;
+                    if (epValue.EntryPoint == APerkEntryPointEffect.EntryType.ModIncomingDamage || epValue.EntryPoint == APerkEntryPointEffect.EntryType.ModIncomingSpellMagnitude)
                         epValue.Value = AdjustEffectMagnitude(epValue.Value ?? 0.0f, effectIntensity);
                 }
             }
