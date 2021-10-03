@@ -1,0 +1,126 @@
+{
+    "ArmorGuardCuirassSolitude1": [
+        "metal",
+		"leathery"
+    ],
+    "ArmorGuardCuirassSolitude": [
+        "metal"
+    ],
+    "ArmorGuardCuirassFalkreath": [
+        "metal"
+    ],
+    "ArmorGuardCuirassFalkreath1": [
+        "metal",
+		"leathery"
+    ],
+    "ArmorGuardCuirassHjaalmarch": [
+        "metal",
+		"leathery",
+		"layered"
+    ],
+    "ArmorGuardCuirassHjaalmarch1": [
+		"metal",
+        "leathery",
+    ],
+    "ArmorGuardCuirassMarkarth": [
+        "metal",
+		"layered"
+    ],
+    "ArmorGuardCuirassMarkarth1": [
+        "metal",
+		"layered"
+    ],
+    "ArmorGuardCuirassRiften": [
+        "metal",
+		"layered"
+    ],
+    "ArmorGuardCuirassRiften1": [
+        "metal"
+    ],
+    "ArmorGuardCuirassThePale": [
+        "leathery",
+		"deep",
+		"layered"
+    ],
+    "ArmorGuardCuirassThePale1": [
+        "leathery",
+		"deep",
+		"layered"
+    ],
+    "ArmorGuardCuirassWhiterun": [
+        "metal",
+		"layered"
+    ],
+    "ArmorGuardCuirassWhiterunLight": [
+        "metal",
+		"leathery",
+		"layered"
+    ],
+    "ArmorStormcloakBearCuirass": [
+        "metal",
+		"deep",
+		"leathery"
+    ],
+    "ArmorStormcloakBearCuirass1": [
+        "metal",
+		"layered"
+    ],
+    "Armor_Eastmarch": [
+        "metal",
+		"deep",
+		"leathery"
+    ],
+    "Armor_Eastmarch_Ligh": [
+        "leathery",
+		"deep"
+    ],
+    "UlfricEbonyCuirass": [
+        "nonconductive",
+		"deep",
+		"thick",
+		"warm",
+		"layered"
+    ],
+    "SolitudeEbonyCuirass": [
+        "nonconductive",
+		"thick"
+    ],
+    "WhiterunEbonyCuirass": [
+        "nonconductive",
+		"deep",
+		"layered"
+    ],
+    "Armor_Rift": [
+        "metal",
+		"layered"
+    ],
+    "ArmorStormcloakCuirassSleeves1": [
+        "metal",
+		"layered"
+    ],
+    "ArmorStormcloakCuirassSleeves": [
+        "leathery",
+		"layered"
+    ],
+    "ArmorStormcloakCuirass": [
+        "leathery",
+		"layered"
+    ],
+    "Armor_Windhelm": [
+        "metal",
+		"layered"
+    ],
+    "Armor_Windhelm_Light": [
+        "metal",
+		"leathery",
+		"layered"
+    ],
+    "ArmorGuardCuirassWinterhold": [
+		"metal",
+        "leathery"
+    ],
+    "ArmorGuardCuirassWinterhold1": [
+		"metal",
+        "leathery"
+    ]
+}

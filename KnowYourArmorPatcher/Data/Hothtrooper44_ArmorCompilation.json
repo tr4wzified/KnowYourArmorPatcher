@@ -1,0 +1,281 @@
+{
+    "IAFalkreathCuirass": [
+        "metal",
+        "deep"
+    ],
+    "IARedguardKnightHeavyCuirass": [
+        "metal"
+    ],
+    "IARedguardKnightLightCuirass": [
+        "metal"
+    ],
+    "IAVagabondCrimsonCuirass": [
+        "warm",
+        "leathery"
+    ],
+    "IAVagabondLeatherCuirass": [
+        "warm",
+        "leathery"
+    ],
+    "IAVagabondDuskCuirass": [
+        "warm",
+        "leathery"
+    ],
+    "IAVanguardPlateCuirass": [
+        "metal",
+        "thick"
+    ],
+    "IAWarchiefHeavyBulwark": [
+        "warm",
+        "metal",
+        "layered"
+    ],
+    "IAWarchiefLightBulwark": [
+        "warm",
+        "metal",
+        "layered"
+    ],
+    "IAHedgeKnightCuirass": [
+        "metal",
+        "deep"
+    ],
+    "IAEinherjarPlateLightCuirass": [
+        "warm",
+        "metal",
+        "deep"
+    ],
+    "IAEinherjarPlateDarkCuirass": [
+        "warm",
+        "metal",
+        "deep"
+    ],
+    "IAHunterCuirass": [
+        "leathery"
+    ],
+    "IAEinherjarBrigandineDarkCuirass": [
+        "warm",
+        "leathery",
+        "layered"
+    ],
+    "IAEinherjarBrigandineLightCuirass": [
+        "warm",
+        "leathery",
+        "layered"
+    ],
+    "IANordMailLightShirt": [
+        "metal"
+    ],
+    "IANordMailHeavyHauberk": [
+        "metal"
+    ],
+    "IAAkaviriSamuraiCuirass": [
+        "nonconductive",
+        "layered"
+    ],
+    "IADragonhideHeavyRobe": [
+        "nonconductive",
+        "thick"
+    ],
+    "IADragonhideLRobe": [
+        "nonconductive",
+        "thick"
+    ],
+    "IADragonhideURobe": [
+        "nonconductive",
+        "thick"
+    ],
+    "IAMercenaryCuirass": [
+        "leathery"
+    ],
+    "IAHeroicImperialCuirass": [
+        "metal",
+        "layered"
+    ],
+    "IADwarvenMageHRobe": [
+        "metal",
+        "leathery"
+    ],
+    "IADwarvenMageLRobe": [
+        "metal",
+        "leathery"
+    ],
+    "IADwarvenMageURobe": [
+        "metal",
+        "leathery"
+    ],
+    "IAPrimitiveNordHeavyCuirass": [
+        "metal"
+    ],
+    "IAPrimitiveNordLightCuirass": [
+        "metal"
+    ],
+    "IABarbarianCuirass": [
+        "metal"
+    ],
+    "IARangerCuirass": [
+        "leathery"
+    ],
+    "IASeadogCuirass": [
+        "leathery"
+    ],
+    "IAPaladinCuirass": [
+        "metal",
+        "deep"
+    ],
+    "IAHeroicStormcloakCuirass": [
+        "warm",
+        "metal",
+        "deep"
+    ],
+    "IAApotheusCuirass": [
+        "leathery"
+    ],
+    "IAWitchplateCuirass": [
+        "metal",
+        "thick"
+    ],
+    "IASpellbinderCrimsonCuirass": [
+        "metal",
+        "deep"
+    ],
+    "IASpellbinderRunicCuirass": [
+        "metal",
+        "deep"
+    ],
+    "IARitualBoethiahCuirass": [
+        "nonconductive",
+        "layered"
+    ],
+    "IADragonEbonBulkyCuirass": [
+        "nonconductive",
+        "thick"
+    ],
+    "IADragonEbonSleekCuirass": [
+        "nonconductive",
+        "thick"
+    ],
+    "IATrollbaneHeavyCuirass": [
+        "warm",
+        "leathery",
+        "layered",
+        "metal"
+    ],
+    "IATrollbaneLightCuirass": [
+        "warm",
+        "leathery",
+        "layered",
+        "metal"
+    ],
+    "IAShamanLRobe": [
+        "warm"
+    ],
+    "IAShamanURobe": [
+        "warm"
+    ],
+    "IADragonKnightCuirassFull": [
+        "nonconductive",
+        "thick"
+    ],
+    "IADragonKnightCuirassFox": [
+        "nonconductive",
+        "thick"
+    ],
+    "IAConanCuirass": [
+        "leathery"
+    ],
+    "IACrimsonArcherCuirass": [
+        "warm",
+        "leathery",
+        "layered"
+    ],
+    "IABrigandDwemerScrap": [
+        "metal",
+        "deep"
+    ],
+    "IABrigandHighwayChain": [
+        "metal",
+        "layered"
+    ],
+    "IABrigandIronHide": [
+        "warm",
+        "metal",
+        "thick"
+    ],
+    "IAAlduinCuirass": [
+        "nonconductive",
+        "thick"
+    ],
+    "IARingmailCuirass": [
+        "metal",
+        "layered"
+    ],
+    "IABoiledChitinHCuirass": [
+        "nonconductive",
+        "thick"
+    ],
+    "IABoiledChitinLCuirass": [
+        "nonconductive",
+        "thick"
+    ],
+    "IASnowBearCuirass": [
+        "warm",
+        "leathery",
+        "layered"
+    ],
+    "IAGlacialCrystalHCuirass": [
+        "nonconductive",
+        "layered"
+    ],
+    "IAGlacialCrystalLCuirass": [
+        "nonconductive",
+        "layered"
+    ],
+    "IAVvardenfellGlassCuirass": [
+        "nonconductive",
+        "thick"
+    ],
+    "IABosmerCuirass": [
+        "leathery"
+    ],
+    "IABosmerEngravedCuirass": [
+        "leathery",
+        "layered"
+    ],
+    "IABosmerHeavyCuirass": [
+        "leathery",
+        "layered"
+    ],
+    "IABosmerHuntHeavyCuirass": [
+        "leathery",
+        "layered"
+    ],
+    "IABosmerHuntLightCuirass": [
+        "leathery",
+        "layered"
+    ],
+    "IADaedricLordCuirass": [
+        "nonconductive",
+        "thick"
+    ],
+    "IAEbonyMageHeavyRobe": [
+        "nonconductive",
+        "layered"
+    ],
+    "IAEbonyMageLightRobe": [
+        "nonconductive",
+        "layered"
+    ],
+    "IAEbonyMageUnarmoredRobe": [
+        "nonconductive",
+        "layered"
+    ],
+    "IAStormlordCuirass": [
+        "metal",
+        "warm",
+        "deep"
+    ],
+    "IAImperialKnightCuirass": [
+        "metal",
+        "deep"
+    ]
+}
