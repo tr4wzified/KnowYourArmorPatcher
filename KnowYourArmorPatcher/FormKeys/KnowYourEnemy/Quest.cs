@@ -10,7 +10,7 @@ namespace Mutagen.Bethesda.FormKeys.SkyrimSE
         public static class Quest
         {
             private static FormLink<IQuestGetter> Construct(uint id) => new FormLink<IQuestGetter>(ModKey.MakeFormKey(id));
-            public static FormLink<IQuestGetter> KYE_book_quest => Construct(0xacaf9);
+            public static FormLink<IQuestGetter> KYE_book_quest => Construct(0x87a);
         }
     }
 }
