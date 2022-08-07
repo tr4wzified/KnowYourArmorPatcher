@@ -10,13 +10,13 @@ namespace Mutagen.Bethesda.FormKeys.SkyrimSE
         public static class Keyword
         {
             private static FormLink<IKeywordGetter> Construct(uint id) => new FormLink<IKeywordGetter>(ModKey.MakeFormKey(id));
-            public static FormLink<IKeywordGetter> kye_armor_deep => Construct(0xb6d0b);
-            public static FormLink<IKeywordGetter> kye_armor_warm => Construct(0xb6d04);
-            public static FormLink<IKeywordGetter> kye_armor_leathery => Construct(0xb6d05);
-            public static FormLink<IKeywordGetter> kye_armor_nonconductive => Construct(0xb6d07);
-            public static FormLink<IKeywordGetter> kye_armor_thick => Construct(0xb6d08);
-            public static FormLink<IKeywordGetter> kye_armor_metal => Construct(0xb6d09);
-            public static FormLink<IKeywordGetter> kye_armor_layered => Construct(0xb6d0a);
+            public static FormLink<IKeywordGetter> kye_armor_deep => Construct(0x882);
+            public static FormLink<IKeywordGetter> kye_armor_warm => Construct(0x87c);
+            public static FormLink<IKeywordGetter> kye_armor_leathery => Construct(0x87d);
+            public static FormLink<IKeywordGetter> kye_armor_nonconductive => Construct(0x87e);
+            public static FormLink<IKeywordGetter> kye_armor_thick => Construct(0x87f);
+            public static FormLink<IKeywordGetter> kye_armor_metal => Construct(0x880);
+            public static FormLink<IKeywordGetter> kye_armor_layered => Construct(0x881);
         }
     }
 }
